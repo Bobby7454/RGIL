@@ -367,18 +367,27 @@ footer{background:#080f1d;color:rgba(255,255,255,0.55);padding:4rem 2rem 0}
   .chairman-portrait{aspect-ratio:2/1;max-height:300px}
   .vm-grid{grid-template-columns:1fr}
 }
-@media(max-width:768px){
+  @media(max-width:768px){
   .nav-links{display:none}
   .hamburger{display:flex}
   .nav-brand-text span{display:none}
+
+  /* ── Timeline mobile fix ── */
   .timeline::before{left:28px}
+
+  /* All items become: [dot col] [card col] */
   .tl-item{grid-template-columns:56px 1fr}
-  .tl-item .tl-left{display:none}
-  .tl-item:nth-child(even) .tl-right .tl-card,
-  .tl-item:nth-child(odd) .tl-right .tl-card{display:block}
-  .tl-item:nth-child(even) .tl-left .tl-card,
-  .tl-item:nth-child(odd) .tl-left .tl-card{display:none}
-  .tl-right{padding:0 0 0 1rem;text-align:left}
+
+  /* Hide left column entirely */
+  .tl-item .tl-left{display:none !important}
+
+  /* Always show the right column */
+  .tl-item .tl-right{display:block !important; padding:0 0 0 1rem; text-align:left}
+
+  /* Force ALL cards (even ones that were in .tl-left) to be visible in .tl-right */
+  .tl-item:nth-child(odd) .tl-right .tl-card{display:block !important}
+  .tl-item:nth-child(even) .tl-right .tl-card{display:block !important}
+
   .tl-center{margin-left:14px}
   .tl-year{writing-mode:horizontal-tb;transform:none;font-size:0.68rem}
   .stats-grid{grid-template-columns:1fr 1fr;gap:0}
@@ -749,19 +758,22 @@ footer{background:#080f1d;color:rgba(255,255,255,0.55);padding:4rem 2rem 0}
 fetch("Components/loader.html")
   .then(res => res.text())
   .then(html => {
+    const alreadyLoaded = sessionStorage.getItem('rgil_loaded');
     const root = document.getElementById("loader-root");
+
+    /* Skip loader on tab revisit — just remove root immediately */
+    if (alreadyLoaded) {
+      root && root.remove();
+      return;
+    }
 
     const temp = document.createElement("div");
     temp.innerHTML = html;
 
-    // inject HTML
     Array.from(temp.childNodes).forEach(node => {
-      if (node.tagName !== "SCRIPT") {
-        root.appendChild(node);
-      }
+      if (node.tagName !== "SCRIPT") root.appendChild(node);
     });
 
-    // execute scripts
     temp.querySelectorAll("script").forEach(oldScript => {
       const newScript = document.createElement("script");
       newScript.textContent = oldScript.textContent;
@@ -770,32 +782,55 @@ fetch("Components/loader.html")
   })
   .catch(err => console.error("Loader failed:", err));
 
-
-// control loader
+/* ── Hide loader after page load ── */
 window.addEventListener("load", () => {
+  sessionStorage.setItem('rgil_loaded', '1'); /* ← mark as loaded */
+
   const checkLoader = setInterval(() => {
     const loader = document.getElementById("loader");
-
     if (loader) {
       loader.style.transition = "opacity 0.5s ease";
       loader.style.opacity = "0";
       loader.style.pointerEvents = "none";
-
       setTimeout(() => {
         const root = document.getElementById("loader-root");
-        if (root) root.remove(); // ✅ clean removal
+        if (root) root.remove();
       }, 500);
-
-      clearInterval(checkLoader); // ✅ stop loop
+      clearInterval(checkLoader);
     }
   }, 50);
 });
 
-// fallback safety
+/* ── Fallback safety ── */
 setTimeout(() => {
   const root = document.getElementById("loader-root");
   if (root) root.remove();
 }, 5000);
+
+/* ── Animated counters ── */
+function initCounters() {
+  const counters = document.querySelectorAll('.ach-num');
+  if (!counters.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el     = entry.target;
+        const target = parseInt(el.textContent);
+        const suffix = el.querySelector('span')?.textContent || '';
+        let cur = 0;
+        const step  = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          cur = Math.min(cur + step, target);
+          el.innerHTML = cur + '<span>' + suffix + '</span>';
+          if (cur >= target) clearInterval(timer);
+        }, 30);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => obs.observe(c));
+}
+document.addEventListener('rgil:ready', initCounters);
   
 /* Animated stat counters — runs after loader.js fires rgil:ready */
 function initCounters() {
@@ -819,6 +854,37 @@ function initCounters() {
   nums.forEach(n => obs.observe(n));
 }
 document.addEventListener('rgil:ready', initCounters);
+
+/* <!-- ══ History section tile ChannelManager ══ --> */
+
+function fixTimeline() {
+  const isMobile = window.innerWidth <= 768;
+
+  document.querySelectorAll('.tl-item').forEach(item => {
+    const leftCard = item.querySelector('.tl-left .tl-card');
+    const rightCol = item.querySelector('.tl-right');
+
+    if (!leftCard || !rightCol) return;
+
+    if (isMobile) {
+      // Move left card into right column if not already moved
+      if (!leftCard.dataset.moved) {
+        rightCol.appendChild(leftCard);
+        leftCard.dataset.moved = 'true';
+      }
+    } else {
+      // Move it back to left column on desktop
+      const leftCol = item.querySelector('.tl-left');
+      if (leftCard.dataset.moved && leftCol) {
+        leftCol.appendChild(leftCard);
+        delete leftCard.dataset.moved;
+      }
+    }
+  });
+}
+
+fixTimeline();
+window.addEventListener('resize', fixTimeline);
 </script>
 </body>
 </html>

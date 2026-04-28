@@ -315,22 +315,25 @@ a { text-decoration: none; color: inherit; }
   <!-- ══ page-loader() ══ --> 
 
 // load loader
+/* ── Loader injection ── */
 fetch("Components/loader.html")
   .then(res => res.text())
   .then(html => {
+    const alreadyLoaded = sessionStorage.getItem('rgil_loaded');
     const root = document.getElementById("loader-root");
+
+    if (alreadyLoaded) {
+      root && root.remove();
+      return;
+    }
 
     const temp = document.createElement("div");
     temp.innerHTML = html;
 
-    // inject HTML
     Array.from(temp.childNodes).forEach(node => {
-      if (node.tagName !== "SCRIPT") {
-        root.appendChild(node);
-      }
+      if (node.tagName !== "SCRIPT") root.appendChild(node);
     });
 
-    // execute scripts
     temp.querySelectorAll("script").forEach(oldScript => {
       const newScript = document.createElement("script");
       newScript.textContent = oldScript.textContent;
@@ -339,33 +342,30 @@ fetch("Components/loader.html")
   })
   .catch(err => console.error("Loader failed:", err));
 
-
-// control loader
+/* ── Hide loader after page load ── */
 window.addEventListener("load", () => {
+  sessionStorage.setItem('rgil_loaded', '1');
+
   const checkLoader = setInterval(() => {
     const loader = document.getElementById("loader");
-
     if (loader) {
       loader.style.transition = "opacity 0.5s ease";
       loader.style.opacity = "0";
       loader.style.pointerEvents = "none";
-
       setTimeout(() => {
         const root = document.getElementById("loader-root");
-        if (root) root.remove(); // ✅ clean removal
+        if (root) root.remove();
       }, 500);
-
-      clearInterval(checkLoader); // ✅ stop loop
+      clearInterval(checkLoader);
     }
   }, 50);
 });
 
-// fallback safety
+/* ── Fallback safety ── */
 setTimeout(() => {
   const root = document.getElementById("loader-root");
   if (root) root.remove();
 }, 5000);
-
 
 /* ════ DATA — img paths are relative to site root ════
    Put staff photos in:  images/staff/<filename>.jpg

@@ -296,13 +296,25 @@ ul    { list-style: none; }
   background: var(--navy); color: var(--gold);
   padding: 0.2rem 1.25rem; font-size: 0.7rem; font-weight: 500;
   letter-spacing: 0.1em; text-transform: uppercase;
-  flex-shrink: 0; white-space: nowrap; margin-right: 1rem;
+  flex-shrink: 0; white-space: nowrap; margin-right: 1rem;z-index: 1;
 }
-.ticker-track { display: flex; gap: 3rem; animation: ticker 28s linear infinite; white-space: nowrap; }
+.ticker-track { display: flex; gap: 3rem; animation: ticker 38s linear infinite; white-space: nowrap; }
 .ticker-item  { font-size: 0.8rem; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
 .ticker-item::before { content: '◆'; font-size: 0.5rem; color: var(--navy); }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* clickable ticker items */
 
+.ticker-item--link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px dashed rgba(255,255,255,0.3);
+  transition: border-color 0.2s, color 0.2s;
+}
+.ticker-item--link:hover {
+  color: var(--gold-light, #e8b96a);
+  border-bottom-color: var(--gold-light, #e8b96a);
+}
 /* ══════════════════════════════════
    SECTION SHARED
 ══════════════════════════════════ */
