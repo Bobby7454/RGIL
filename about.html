@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <link rel="stylesheet" href="Components/shared.css">
-<script src="components/loader.js"></script> 
+<script src="Components/loader.js"></script> 
 <style>
 :root{
   --navy:#0f2340;--gold:#c8973a;--gold-light:#e8b96a;
@@ -746,7 +746,7 @@ footer{background:#080f1d;color:rgba(255,255,255,0.55);padding:4rem 2rem 0}
 <!-- ══ page-loader() ══ --> 
 
 // load loader
-fetch("components/loader.html")
+fetch("Components/loader.html")
   .then(res => res.text())
   .then(html => {
     const root = document.getElementById("loader-root");

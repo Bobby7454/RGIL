@@ -10,14 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 
   <!-- Shared nav/footer styles -->
-  <link rel="stylesheet" href="components/shared.css"/>
+  <link rel="stylesheet" href="Components/shared.css"/>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
   <!-- Loader — fetches nav+footer in parallel with sessionStorage cache -->
-  <script src="components/loader.js"></script>
+  <script src="Components/loader.js"></script>
 
 <style>
 :root {
@@ -315,7 +315,7 @@ a { text-decoration: none; color: inherit; }
   <!-- ══ page-loader() ══ --> 
 
 // load loader
-fetch("components/loader.html")
+fetch("Components/loader.html")
   .then(res => res.text())
   .then(html => {
     const root = document.getElementById("loader-root");
