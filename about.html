@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About the College – Rajiv Gandhi Institute of Law</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="stylesheet" href="Components/shared.css">
+<script src="components/loader.js"></script> 
+<style>
+:root{
+  --navy:#0f2340;--gold:#c8973a;--gold-light:#e8b96a;
+  --cream:#faf7f2;--white:#ffffff;--text:#1a1a2e;--muted:#5a5a72;
+  --border:rgba(200,151,58,0.25);--nav-h:72px;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:var(--cream);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+ul{list-style:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);
+  background:rgba(15,35,64,0.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  transition:box-shadow 0.3s;
+}
+.nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,0.35)}
+.nav-inner{max-width:1280px;width:100%;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:2rem}
+.nav-brand{display:flex;align-items:center;gap:0.75rem;flex-shrink:0}
+.nav-brand img{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+.nav-brand-text strong{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--white);display:block}
+.nav-brand-text span{font-size:0.65rem;color:var(--gold-light);letter-spacing:0.04em;display:block}
+.nav-links{display:flex;align-items:center;margin-left:auto}
+.nav-item{position:relative}
+.nav-item>a{
+  display:flex;align-items:center;gap:4px;padding:0 1rem;height:var(--nav-h);
+  font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  color:rgba(255,255,255,0.78);transition:color 0.2s;
+}
+.nav-item>a:hover,.nav-item.active>a{color:var(--gold-light)}
+.nav-item>a .caret{font-size:0.5rem;opacity:0.6;transition:transform 0.25s}
+.nav-item:hover>a .caret{transform:rotate(180deg)}
+.nav-item>a::after{
+  content:'';position:absolute;bottom:0;left:1rem;right:1rem;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.25s ease;
+}
+.nav-item>a:hover::after,.nav-item.active>a::after{transform:scaleX(1)}
+.dropdown{
+  position:absolute;top:calc(var(--nav-h) - 2px);left:0;background:var(--navy);
+  border:1px solid var(--border);border-top:2px solid var(--gold);min-width:210px;
+  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);
+  transition:opacity 0.2s,transform 0.2s,visibility 0.2s;z-index:1000;
+}
+.nav-item:hover .dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.dropdown a{
+  display:block;padding:0.65rem 1.25rem;font-size:0.78rem;letter-spacing:0.03em;
+  color:rgba(255,255,255,0.75);border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:background 0.15s,color 0.15s,padding-left 0.15s;
+}
+.dropdown a:last-child{border-bottom:none}
+.dropdown a:hover{background:rgba(200,151,58,0.12);color:var(--gold-light);padding-left:1.6rem}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;margin-left:auto;padding:4px;background:none;border:none}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:transform 0.3s,opacity 0.3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{
+  position:fixed;inset:var(--nav-h) 0 0 0;background:var(--navy);z-index:998;
+  overflow-y:auto;padding:1.5rem;display:none;flex-direction:column;
+}
+.mobile-menu.open{display:flex}
+.mobile-item>a{
+  display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;
+  font-size:0.9rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;
+  color:rgba(255,255,255,0.85);border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.mobile-item .sub{display:none;flex-direction:column;background:rgba(255,255,255,0.04);border-radius:6px;margin:0.5rem 0 0.5rem 1rem}
+.mobile-item.open .sub{display:flex}
+.mobile-item .sub a{padding:0.6rem 1rem;font-size:0.82rem;color:rgba(255,255,255,0.65);border-bottom:1px solid rgba(255,255,255,0.05);transition:color 0.15s}
+.mobile-item .sub a:hover{color:var(--gold-light)}
+
+/* ── PAGE HERO ── */
+.page-hero{
+  background:linear-gradient(160deg,#0a1628 0%,#0f2340 50%,#1a3a5c 100%);
+  padding:calc(var(--nav-h) + 5rem) 2rem 5rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero-rings{position:absolute;inset:0;pointer-events:none}
+.hero-ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(200,151,58,0.1);
+  top:50%;left:50%;animation:pulseRing 6s ease-in-out infinite;
+}
+.hero-ring:nth-child(1){width:400px;height:400px;transform:translate(-50%,-50%)}
+.hero-ring:nth-child(2){width:650px;height:650px;transform:translate(-50%,-50%);animation-delay:2s}
+.hero-ring:nth-child(3){width:900px;height:900px;transform:translate(-50%,-50%);animation-delay:4s}
+@keyframes pulseRing{0%,100%{opacity:0.35}50%{opacity:0.1}}
+.page-hero-label{
+  display:inline-block;font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;margin-bottom:1.25rem;
+  position:relative;z-index:1;
+}
+.page-hero h1{
+  font-family:var(--serif);font-size:clamp(2.8rem,6vw,4.5rem);font-weight:700;
+  color:var(--white);line-height:1.1;margin-bottom:0.75rem;position:relative;z-index:1;
+}
+.page-hero h1 em{font-style:italic;color:var(--gold-light)}
+.page-hero p{font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto;line-height:1.8;position:relative;z-index:1}
+.page-hero-nav{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:0.6rem;
+  margin-top:2.5rem;position:relative;z-index:1;
+}
+.page-hero-nav a{
+  padding:0.45rem 1.25rem;border:1px solid rgba(255,255,255,0.2);border-radius:100px;
+  font-size:0.75rem;color:rgba(255,255,255,0.65);letter-spacing:0.04em;
+  transition:border-color 0.2s,color 0.2s,background 0.2s;
+}
+.page-hero-nav a:hover{border-color:var(--gold);color:var(--gold-light);background:rgba(200,151,58,0.08)}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);padding:0.75rem 2rem}
+.breadcrumb-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)}
+.breadcrumb-inner a{color:var(--gold);transition:color 0.2s}
+.breadcrumb-inner a:hover{color:var(--navy)}
+.breadcrumb-inner i{font-size:0.6rem;opacity:0.5}
+
+/* ── SHARED ── */
+.container{max-width:1200px;margin:0 auto}
+.section-label{display:inline-block;font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;margin-bottom:1rem}
+.section-title{font-family:var(--serif);font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.15;margin-bottom:1rem}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-lead{font-size:0.95rem;color:var(--muted);line-height:1.85;max-width:640px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:0.8rem 2rem;border-radius:4px;font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.22s ease;cursor:pointer;border:none}
+.btn-primary{background:var(--gold);color:var(--navy)}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,151,58,0.3)}
+.btn-outline{background:transparent;color:var(--navy);border:1px solid rgba(15,35,64,0.25)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── ABOUT INTRO ── */
+.about-intro{background:var(--white);padding:6rem 2rem}
+.about-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.intro-visual{position:relative}
+.intro-img-box{
+  background:linear-gradient(145deg,#0f2340,#1a3a5c);
+  border-radius:8px;aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+}
+.intro-img-box i{font-size:7rem;color:rgba(200,151,58,0.2)}
+.intro-img-box::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--gold);
+}
+.intro-float-card{
+  position:absolute;bottom:-1.75rem;right:-1.75rem;
+  background:var(--gold);padding:1.5rem 1.75rem;border-radius:6px;
+  text-align:center;box-shadow:0 12px 32px rgba(200,151,58,0.3);
+}
+.intro-float-card strong{font-family:var(--serif);font-size:2.8rem;font-weight:700;color:var(--navy);display:block;line-height:1}
+.intro-float-card span{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(15,35,64,0.7)}
+.intro-text p{font-size:0.95rem;color:var(--muted);line-height:1.9;margin-bottom:1rem}
+.intro-text p:first-of-type{
+  font-family:var(--serif);font-size:1.15rem;color:var(--text);line-height:1.75;
+  border-left:3px solid var(--gold);padding-left:1rem;margin-bottom:1.5rem;
+}
+.intro-badges{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.75rem}
+.ibadge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0.4rem 1rem;border-radius:100px;
+  font-size:0.75rem;font-weight:500;
+  border:1px solid rgba(0,0,0,0.1);color:var(--navy);background:var(--cream);
+}
+.ibadge i{color:var(--gold);font-size:0.7rem}
+
+/* ── STATS STRIP ── */
+.stats-strip{
+  background:var(--navy);padding:4rem 2rem;
+}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat-item{
+  text-align:center;padding:2rem;
+  border-right:1px solid rgba(255,255,255,0.08);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:var(--serif);font-size:3rem;font-weight:700;
+  color:var(--gold-light);display:block;line-height:1;margin-bottom:0.5rem;
+}
+.stat-label{font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase}
+
+/* ── HISTORY ── */
+.history-section{background:var(--cream);padding:6rem 2rem}
+.timeline{position:relative;margin-top:3.5rem}
+.timeline::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,var(--gold) 10%,var(--gold) 90%,transparent);
+  transform:translateX(-50%);
+}
+.tl-item{
+  display:grid;grid-template-columns:1fr 60px 1fr;
+  gap:0;align-items:start;margin-bottom:3rem;
+}
+.tl-item:last-child{margin-bottom:0}
+.tl-left,.tl-right{padding:0 2rem}
+.tl-left{text-align:right}
+.tl-right{text-align:left}
+.tl-item:nth-child(even) .tl-left .tl-card{display:none}
+.tl-item:nth-child(odd) .tl-right .tl-card{display:none}
+.tl-item:nth-child(even) .tl-right .tl-card,.tl-item:nth-child(odd) .tl-left .tl-card{display:block}
+.tl-center{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tl-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--white);
+  box-shadow:0 0 0 3px var(--gold);flex-shrink:0;margin-top:18px;
+}
+.tl-year{
+  font-family:var(--serif);font-size:0.8rem;font-weight:700;
+  color:var(--gold);letter-spacing:0.04em;writing-mode:vertical-lr;
+  transform:rotate(180deg);margin-top:8px;
+}
+.tl-card{
+  background:var(--white);border:1px solid rgba(0,0,0,0.07);
+  border-radius:8px;padding:1.5rem;
+  box-shadow:0 2px 12px rgba(0,0,0,0.04);
+  transition:box-shadow 0.25s,transform 0.25s;
+}
+.tl-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.tl-card h4{
+  font-family:var(--serif);font-size:1.1rem;font-weight:700;
+  color:var(--navy);margin-bottom:0.4rem;
+}
+.tl-card p{font-size:0.84rem;color:var(--muted);line-height:1.7}
+
+/* ── VISION MISSION ── */
+.vm-section{background:var(--white);padding:6rem 2rem}
+.vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.vm-card{
+  border-radius:8px;overflow:hidden;
+  border:1px solid rgba(0,0,0,0.07);
+}
+.vm-card-head{
+  padding:2rem 2rem 1.5rem;
+  display:flex;align-items:flex-start;gap:1rem;
+}
+.vm-head-icon{
+  width:52px;height:52px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+}
+.vm-card.vision .vm-card-head{background:linear-gradient(135deg,var(--navy),#1a3a5c)}
+.vm-card.mission .vm-card-head{background:linear-gradient(135deg,#1a3a5c,#0f2340)}
+.vm-card.vision .vm-head-icon{background:rgba(200,151,58,0.15);color:var(--gold-light)}
+.vm-card.mission .vm-head-icon{background:rgba(200,151,58,0.15);color:var(--gold-light)}
+.vm-head-text h3{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--white);margin-bottom:0.25rem}
+.vm-head-text span{font-size:0.72rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase}
+.vm-card-body{padding:1.75rem 2rem;background:var(--white)}
+.vm-card-body p{font-size:0.9rem;color:var(--muted);line-height:1.85;margin-bottom:1rem}
+.vm-card-body p:last-child{margin-bottom:0}
+.vm-list{display:flex;flex-direction:column;gap:0.65rem;margin-top:1rem}
+.vm-list li{
+  display:flex;align-items:flex-start;gap:0.6rem;
+  font-size:0.85rem;color:var(--muted);line-height:1.6;
+}
+.vm-list li::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;margin-top:6px;
+}
+
+/* ── CHAIRMAN MESSAGE ── */
+.chairman-section{background:var(--cream);padding:6rem 2rem}
+.chairman-grid{display:grid;grid-template-columns:320px 1fr;gap:4rem;align-items:start;margin-top:3rem}
+.chairman-aside{position:sticky;top:calc(var(--nav-h) + 2rem)}
+.chairman-portrait{
+  background:linear-gradient(145deg,var(--navy),#1a3a5c);
+  border-radius:8px;aspect-ratio:3/4;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;margin-bottom:1.5rem;position:relative;
+}
+.chairman-portrait::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);
+}
+.chairman-portrait i{font-size:5rem;color:rgba(200,151,58,0.25)}
+.chairman-meta h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:0.25rem}
+.chairman-meta p{font-size:0.82rem;color:var(--gold);font-weight:500;letter-spacing:0.04em}
+.chairman-meta .org{font-size:0.78rem;color:var(--muted);margin-top:4px}
+.message-body{padding-top:0.5rem}
+.message-body .opening{
+  font-family:var(--serif);font-size:1.35rem;font-style:italic;
+  color:var(--navy);line-height:1.6;margin-bottom:2rem;
+  padding-left:1.5rem;border-left:4px solid var(--gold);
+}
+.message-body p{font-size:0.92rem;color:var(--muted);line-height:1.9;margin-bottom:1.25rem}
+.message-body p:last-child{margin-bottom:0}
+.signature{
+  margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.08);
+  display:flex;align-items:center;gap:1rem;
+}
+.sig-line{flex:1;height:1px;background:linear-gradient(to right,var(--gold),transparent)}
+.sig-text{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--navy);white-space:nowrap}
+
+/* ── GOVERNING BODY ── */
+.governing-section{background:var(--white);padding:6rem 2rem}
+.gb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3rem}
+.gb-card{
+  background:var(--cream);border:1px solid rgba(0,0,0,0.07);border-radius:8px;
+  padding:1.75rem;text-align:center;
+  transition:transform 0.22s,box-shadow 0.22s,border-color 0.22s;
+  border-top:3px solid transparent;
+}
+.gb-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.08);border-top-color:var(--gold)}
+.gb-avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy),#1a3a5c);
+  border:3px solid var(--gold);margin:0 auto 1rem;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--gold-light);
+}
+.gb-card h4{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:0.25rem}
+.gb-role{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;display:block}
+.gb-card p{font-size:0.8rem;color:var(--muted);line-height:1.6}
+
+/* ── AFFILIATIONS ── */
+.affil-section{
+  background:linear-gradient(160deg,var(--navy) 0%,#1a3a5c 100%);
+  padding:5rem 2rem;text-align:center;
+}
+.affil-section .section-title{color:var(--white)}
+.affil-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin-top:3rem}
+.affil-card{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(200,151,58,0.25);
+  border-radius:8px;padding:2rem 2.5rem;min-width:200px;
+  text-align:center;transition:background 0.25s,border-color 0.25s;
+}
+.affil-card:hover{background:rgba(200,151,58,0.1);border-color:rgba(200,151,58,0.5)}
+.affil-card i{font-size:2rem;color:var(--gold-light);display:block;margin-bottom:1rem}
+.affil-card h4{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:0.35rem}
+.affil-card p{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{background:#080f1d;color:rgba(255,255,255,0.55);padding:4rem 2rem 0}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08)}
+.footer-brand img{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;margin-bottom:1rem}
+.footer-brand h3{font-family:var(--serif);font-size:1.1rem;color:var(--white);margin-bottom:0.5rem}
+.footer-brand p{font-size:0.83rem;line-height:1.75;max-width:300px}
+.footer-socials{display:flex;gap:0.75rem;margin-top:1.25rem}
+.footer-socials a{width:36px;height:36px;border-radius:4px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:0.85rem;transition:border-color 0.2s,color 0.2s,background 0.2s}
+.footer-socials a:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,151,58,0.1)}
+.footer-col h4{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--white);margin-bottom:1.25rem}
+.footer-col ul{display:flex;flex-direction:column;gap:0.6rem}
+.footer-col a{font-size:0.84rem;color:rgba(255,255,255,0.45);transition:color 0.2s,padding-left 0.2s;display:block}
+.footer-col a:hover{color:var(--gold-light);padding-left:4px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:1.5rem 0;font-size:0.75rem;color:rgba(255,255,255,0.25)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .about-intro-grid{grid-template-columns:1fr;gap:3rem}
+  .intro-float-card{display:none}
+  .chairman-grid{grid-template-columns:1fr;gap:2.5rem}
+  .chairman-aside{position:static}
+  .chairman-portrait{aspect-ratio:2/1;max-height:300px}
+  .vm-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-brand-text span{display:none}
+  .timeline::before{left:28px}
+  .tl-item{grid-template-columns:56px 1fr}
+  .tl-item .tl-left{display:none}
+  .tl-item:nth-child(even) .tl-right .tl-card,
+  .tl-item:nth-child(odd) .tl-right .tl-card{display:block}
+  .tl-item:nth-child(even) .tl-left .tl-card,
+  .tl-item:nth-child(odd) .tl-left .tl-card{display:none}
+  .tl-right{padding:0 0 0 1rem;text-align:left}
+  .tl-center{margin-left:14px}
+  .tl-year{writing-mode:horizontal-tb;transform:none;font-size:0.68rem}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:0}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .stat-item:nth-child(odd){border-right:1px solid rgba(255,255,255,0.08)}
+  .footer-grid{grid-template-columns:1fr;gap:2rem}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+@media(max-width:480px){
+  .page-hero h1{font-size:2.5rem}
+  .gb-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ page-loader() ══ -->  
+<div id="loader-root"></div>
+
+<!-- ── NAV ── -->
+<div id="navbar-placeholder"></div>
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="hero-rings">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+  </div>
+  <div class="page-hero-label">About the Institution</div>
+  <h1>Rajiv Gandhi<br/><em>Institute of Law</em></h1>
+  <p>A premier institution of legal education in Andhra Pradesh — shaping advocates, judges, and public servants with knowledge, ethics, and a profound sense of justice.</p>
+  <nav class="page-hero-nav">
+    <a href="about.html">About</a>
+    <a href="#history">History</a>
+    <a href="#vision">Vision &amp; Mission</a>
+    <a href="#chairman">Chairman's Message</a>
+    <a href="#governing">Governing Body</a>
+  </nav>
+</section>
+
+<!-- ── BREADCRUMB ── -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>About the College</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+   ABOUT INTRO
+══════════════════════════ -->
+<section class="about-intro" id="about">
+  <div class="container">
+    <div class="about-intro-grid">
+      <div class="intro-visual">
+        <div class="intro-img-box">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <div class="intro-float-card">
+          <strong>BCI</strong>
+          <span>Recognised</span>
+        </div>
+      </div>
+      <div class="intro-text">
+        <span class="section-label">About the College</span>
+        <h2 class="section-title">A Tradition of<br/><em>Legal Scholarship</em></h2>
+        <p>Rajiv Gandhi Institute of Law stands as one of Andhra Pradesh's most respected institutions for legal education. Situated at 4-15, Ramanayyapeta, Kakinada, the college is affiliated to Adikavi Nannaya University and recognised by the Bar Council of India — the apex regulatory body for legal education in India.</p>
+        <p>Our institution offers two BCI-approved programmes — the 3-Year LL.B and the integrated 5-Year BA LL.B — designed to cultivate not just legal knowledge, but also analytical thinking, ethical judgment, and a deep sense of public service.</p>
+        <p>With a faculty comprising experienced legal scholars and practising advocates, a well-stocked legal library, a state-of-the-art moot court hall, and an active legal aid programme, RGIL provides students with everything they need to thrive as tomorrow's legal professionals.</p>
+        <div class="intro-badges">
+          <span class="ibadge"><i class="fas fa-check-circle"></i> BCI Recognised</span>
+          <span class="ibadge"><i class="fas fa-university"></i> Affiliated to Adikavi Nannaya University</span>
+          <span class="ibadge"><i class="fas fa-gavel"></i> Moot Court Facility</span>
+          <span class="ibadge"><i class="fas fa-book"></i> Rich Legal Library</span>
+          <span class="ibadge"><i class="fas fa-hands-helping"></i> Legal Aid Programme</span>
+          <span class="ibadge"><i class="fas fa-trophy"></i> NSS &amp; Sports</span>
+        </div>
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <a href="admissions.html" class="btn btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+          <a href="staff.html" class="btn btn-outline">Meet the Faculty</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+   STATS STRIP
+══════════════════════════ -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num" data-target="30">30</span>
+        <span class="stat-label">Years of Excellence</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="24">0</span>
+        <span class="stat-label">Faculty Members</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="10">0</span>
+        <span class="stat-label">Alumni in Practice</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="2">0</span>
+        <span class="stat-label">Law Programmes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+   HISTORY
+══════════════════════════ -->
+<section class="history-section" id="history">
+  <div class="container">
+    <span class="section-label">Our Story</span>
+    <h2 class="section-title">A Journey of <em>Purpose</em></h2>
+    <p class="section-lead">What began as a vision in Kakinada has grown into a journey of resilience and transformation—shaping futures, empowering minds, and building a legacy in legal education across Coastal Andhra Pradesh.</p>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-card">
+            <h4>The Beginning</h4>
+            <p>Rajiv Gandhi Institute of Law was founded with a simple yet powerful belief—that every aspiring student deserves access to quality legal education. In its early days, the path was challenging, but with determination and a clear purpose, the foundation for a lasting institution was laid.</p>
+          </div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">Est.</div></div>
+        <div class="tl-right"></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left"></div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">BCI</div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <h4>A Defining Milestone</h4>
+            <p>Recognition from the Bar Council of India marked a turning point in our journey. It was more than an approval—it was a testament to our commitment to quality, credibility, and the highest standards in legal education.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-card">
+            <h4>Strengthening Foundations</h4>
+            <p>With affiliation to Adikavi Nannaya University, the institution gained academic strength and structure. This step opened new doors for students, ensuring recognised degrees and a solid platform to build successful legal careers.</p>
+          </div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">AkNU</div></div>
+        <div class="tl-right"></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left"></div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">LLB</div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <h4>Expanding Opportunities</h4>
+            <p>Understanding the diverse aspirations of students, RGIL introduced both the 5-Year B.A. LL.B. integrated programme for fresh graduates of Class XII and the 3-Year LL.B. programme for those seeking to enter the legal profession after completing their degree. This expansion opened multiple pathways into the world of law.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-card">
+            <h4>Learning Beyond Classrooms</h4>
+            <p>At RGIL, education extends beyond textbooks. With a fully equipped moot court hall and an active Legal Aid Cell, students engage with real-world legal challenges—building confidence, skill, and a deep sense of responsibility towards society.</p>
+          </div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">MC</div></div>
+        <div class="tl-right"></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-left"></div>
+        <div class="tl-center"><div class="tl-dot"></div><div class="tl-year">Now</div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <h4>Continuing the Journey</h4>
+            <p>Today, Rajiv Gandhi Institute of Law stands as a symbol of growth, perseverance, and possibility. With dedicated faculty, accomplished alumni, and ambitious students, the institution continues to move forward—shaping not just legal professionals, but responsible leaders of tomorrow.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+   VISION & MISSION
+══════════════════════════ -->
+<section class="vm-section" id="vision">
+  <div class="container">
+    <span class="section-label">Our Purpose</span>
+    <h2 class="section-title">Vision &amp; <em>Mission</em></h2>
+    <p class="section-lead">Grounded in a deep belief in justice, equality, and the rule of law — our vision and mission guide every decision we make as an institution.</p>
+    <div class="vm-grid">
+      <div class="vm-card vision">
+        <div class="vm-card-head">
+          <div class="vm-head-icon"><i class="fas fa-eye"></i></div>
+          <div class="vm-head-text">
+            <h3>Our Vision</h3>
+            <span>What we strive to be</span>
+          </div>
+        </div>
+        <div class="vm-card-body">
+          <p>To be a centre of excellence in legal education that produces competent, ethical, and socially responsible legal professionals who uphold the rule of law and serve the cause of justice in India and beyond.</p>
+          <p>We aspire to nurture legal thinkers who are as comfortable in a courtroom as they are in community service — advocates for both law and humanity.</p>
+          <ul class="vm-list">
+            <li>Premier institution of legal education in coastal Andhra Pradesh</li>
+            <li>Nationally recognised for academic rigour and professional output</li>
+            <li>A model for ethical legal practice and community service</li>
+            <li>Driving legal literacy and access to justice for all</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vm-card mission">
+        <div class="vm-card-head">
+          <div class="vm-head-icon"><i class="fas fa-bullseye"></i></div>
+          <div class="vm-head-text">
+            <h3>Our Mission</h3>
+            <span>What we commit to do</span>
+          </div>
+        </div>
+        <div class="vm-card-body">
+          <p>To uphold the rule of law by educating future legal professionals with a strong foundation in justice, ethics, and public service — empowering them to transform society through informed and compassionate leadership.</p>
+          <p>We are committed to providing an environment where academic excellence, practical skills, and moral integrity flourish together.</p>
+          <ul class="vm-list">
+            <li>Deliver BCI-compliant, rigorous legal education across all programmes</li>
+            <li>Develop practical courtroom and advocacy skills through moot courts</li>
+            <li>Foster community engagement through legal aid and NSS activities</li>
+            <li>Maintain a faculty of experienced scholars and legal practitioners</li>
+            <li>Provide internship and placement support for every graduate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+   CHAIRMAN MESSAGE
+══════════════════════════ -->
+<section class="chairman-section" id="chairman">
+  <div class="container">
+    <span class="section-label">Leadership</span>
+    <h2 class="section-title">Chairman's <em>Message</em></h2>
+    <div class="chairman-grid">
+      <div class="chairman-aside">
+        <div class="chairman-portrait">
+          <img src="/images/chairman.png" alt="">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="chairman-meta">
+          <h3>Chairman</h3>
+          <p>Rajiv Gandhi Institute of Law</p>
+          <span class="org">Kakinada, Andhra Pradesh</span>
+        </div>
+      </div>
+      <div class="message-body">
+        <p class="opening">"The study of law is not merely the study of statutes — it is the study of human society, its aspirations for justice, and its mechanisms for resolving conflict with reason and fairness."</p>
+        <p>It is with immense pride and deep sense of responsibility that I welcome you to the Rajiv Gandhi Institute of Law. Since our inception, we have remained steadfast in our commitment to making legal education meaningful, accessible, and transformative for the students of this region.</p>
+        <p>Legal education in India is at a pivotal juncture. Courts across the country face enormous backlogs; access to legal aid remains limited for many citizens; and new challenges — from technology law to environmental justice — demand a new generation of lawyers who are not only learned in doctrine, but also agile, empathetic, and purpose-driven.</p>
+        <p>At RGIL, we have deliberately built an environment where students don't simply learn the law — they learn to think, argue, and act like true advocates of justice. Our experienced faculty, our moot court facility, our legal aid camps, and our partnerships with courts and institutions are all oriented toward one goal: sending out graduates who will make a genuine difference.</p>
+        <p>To our students — past, present, and future — I say this: the law is a noble calling. It demands your intellect, your integrity, and your courage. We are here to prepare you for all three. I invite you to make the most of every opportunity this institution offers, and to carry forward the values we stand for.</p>
+        <div class="signature">
+          <div class="sig-line"></div>
+          <div class="sig-text">Chairman, RGIL</div>
+          <div class="sig-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+   GOVERNING BODY
+══════════════════════════ -->
+<section class="governing-section" id="governing">
+  <div class="container">
+    <span class="section-label">Governance</span>
+    <h2 class="section-title">Governing <em>Body</em></h2>
+    <p class="section-lead">Our governing body comprises eminent legal minds, academics, and administrators who guide the strategic direction and academic integrity of the institution.</p>
+    <div class="gb-grid">
+      <div class="gb-card">
+        <div class="gb-avatar">CH</div>
+        <h4>Chairman</h4>
+        <span class="gb-role">Chairman</span>
+        <p>Presides over the institution's governance, policy, and strategic direction.</p>
+      </div>
+      <div class="gb-card">
+        <div class="gb-avatar">BSR</div>
+        <h4>Dr. Bhasuru Srinivasa Rao</h4>
+        <span class="gb-role">Professor &amp; Principal</span>
+        <p>Leads the academic and administrative functioning of the institute with 25 years of experience.</p>
+      </div>
+      <div class="gb-card">
+        <div class="gb-avatar">SM</div>
+        <h4>Secretary</h4>
+        <span class="gb-role">Member Secretary</span>
+        <p>Manages institutional affairs, compliance, and coordination with regulatory bodies.</p>
+      </div>
+      <div class="gb-card">
+        <div class="gb-avatar">BCI</div>
+        <h4>BCI Nominee</h4>
+        <span class="gb-role">Bar Council Representative</span>
+        <p>Ensures the institution meets Bar Council of India standards and regulations.</p>
+      </div>
+      <div class="gb-card">
+        <div class="gb-avatar">UN</div>
+        <h4>University Nominee</h4>
+        <span class="gb-role">Adikavi Nannaya University</span>
+        <p>Represents the affiliating university in academic matters and examination oversight.</p>
+      </div>
+      <div class="gb-card">
+        <div class="gb-avatar">FA</div>
+        <h4>Faculty Representative</h4>
+        <span class="gb-role">Academic Member</span>
+        <p>Brings faculty perspective to governing body decisions on curriculum and welfare.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+   AFFILIATIONS
+══════════════════════════ -->
+<section class="affil-section">
+  <div class="container">
+    <span class="section-label" style="color:var(--gold)">Recognition</span>
+    <h2 class="section-title" style="color:var(--white);margin-bottom:0.5rem">Affiliations &amp; <em>Recognitions</em></h2>
+    <p style="color:rgba(255,255,255,0.45);font-size:0.92rem;max-width:500px;margin:0 auto 0">Our credentials are backed by the country's foremost regulatory and academic bodies.</p>
+    <div class="affil-grid">
+      <div class="affil-card">
+        <i class="fas fa-balance-scale"></i>
+        <h4>Bar Council of India</h4>
+        <p>Recognised by the BCI — the apex statutory body regulating legal practice and legal education in India.</p>
+      </div>
+      <div class="affil-card">
+        <i class="fas fa-university"></i>
+        <h4>Adikavi Nannaya University</h4>
+        <p>Formally affiliated to AkNU, Rajamahendravaram — ensuring academic standards, examinations, and degree conferral.</p>
+      </div>
+      <div class="affil-card">
+        <i class="fas fa-scroll"></i>
+        <h4>Govt. of Andhra Pradesh</h4>
+        <p>Established and operating under the regulations of the Government of Andhra Pradesh for higher education.</p>
+      </div>
+      <div class="affil-card">
+        <i class="fas fa-hands-helping"></i>
+        <h4>National Service Scheme</h4>
+        <p>Active NSS unit committed to community service, social awareness, and volunteer programmes across Kakinada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="footer-placeholder"></div>
+<script>
+<!-- ══ page-loader() ══ --> 
+
+// load loader
+fetch("components/loader.html")
+  .then(res => res.text())
+  .then(html => {
+    const root = document.getElementById("loader-root");
+
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    // inject HTML
+    Array.from(temp.childNodes).forEach(node => {
+      if (node.tagName !== "SCRIPT") {
+        root.appendChild(node);
+      }
+    });
+
+    // execute scripts
+    temp.querySelectorAll("script").forEach(oldScript => {
+      const newScript = document.createElement("script");
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.error("Loader failed:", err));
+
+
+// control loader
+window.addEventListener("load", () => {
+  const checkLoader = setInterval(() => {
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+      loader.style.transition = "opacity 0.5s ease";
+      loader.style.opacity = "0";
+      loader.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        const root = document.getElementById("loader-root");
+        if (root) root.remove(); // ✅ clean removal
+      }, 500);
+
+      clearInterval(checkLoader); // ✅ stop loop
+    }
+  }, 50);
+});
+
+// fallback safety
+setTimeout(() => {
+  const root = document.getElementById("loader-root");
+  if (root) root.remove();
+}, 5000);
+  
+/* Animated stat counters — runs after loader.js fires rgil:ready */
+function initCounters() {
+  const nums = document.querySelectorAll('.stat-num[data-target]');
+  if (!nums.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      let cur = 0;
+      const step = Math.ceil(target / 40);
+      const t = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = cur + '+';
+        if (cur >= target) { el.textContent = target + '+'; clearInterval(t); }
+      }, 30);
+      obs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(n => obs.observe(n));
+}
+document.addEventListener('rgil:ready', initCounters);
+</script>
+</body>
+</html>

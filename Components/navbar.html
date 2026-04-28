@@ -1,0 +1,112 @@
+<!-- ══════════════════════════════════
+     NAVBAR PARTIAL — navbar.html
+     Include on every page via:
+       fetch('navbar.html')
+     ══════════════════════════════════ -->
+
+<!-- ══ NAV ══ -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="/images/logo.jpg" alt="RGIL Logo"/>
+      <div class="nav-brand-text">
+        <strong>Rajiv Gandhi Institute of Law</strong>
+        <span>Affiliated to Adikavi Nannaya University · BCI Recognised</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li class="nav-item"><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="#">About <i class="fas fa-chevron-down caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="about.html">About the College</a></li>
+          <li><a href="about.html#history">Brief History</a></li>
+          <li><a href="about.html#chairman">Chairman's Message</a></li>
+          <li><a href="about.html#governing">Governing Body</a></li>
+          <li><a href="about.html#vision">Vision &amp; Mission</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a href="#">Administration <i class="fas fa-chevron-down caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="staff.html">Principal &amp; Staff</a></li>
+          <li><a href="staff.html#library">Library</a></li>
+          <li><a href="staff.html#society">Society</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a href="#">Programmes <i class="fas fa-chevron-down caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="programmes.html#llb3">3-Year LL.B</a></li>
+          <li><a href="programmes.html#ballb5">5-Year BA LL.B</a></li>
+          <li><a href="programmes.html#syllabus">Syllabus</a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a href="admissions.html">Admissions</a></li>
+      <li class="nav-item">
+        <a href="#">Gallery <i class="fas fa-chevron-down caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="gallery.html#court">Court Visits</a></li>
+          <li><a href="gallery.html#prison">Central Prison Visits</a></li>
+          <li><a href="gallery.html#hrc">HRC</a></li>
+          <li><a href="gallery.html#legal">Legal Aid Camp</a></li>
+          <li><a href="gallery.html#moot">Moot Court</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a href="#">Achievements <i class="fas fa-chevron-down caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="achievements.html#sports">Sports</a></li>
+          <li><a href="achievements.html#conferences">Conferences</a></li>
+          <li><a href="achievements.html#moot">Moot Court</a></li>
+          <li><a href="achievements.html#nss">NSS</a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="ham" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-item">
+    <a href="index.html">Home</a>
+  </div>
+  <div class="mobile-item">
+    <a href="#" class="mob-toggle">About <i class="fas fa-chevron-down"></i></a>
+    <div class="sub">
+      <a href="about.html">About the College</a>
+      <a href="about.html#history">Brief History</a>
+      <a href="about.html#chairman">Chairman's Message</a>
+      <a href="about.html#vision">Vision &amp; Mission</a>
+    </div>
+  </div>
+  <div class="mobile-item">
+    <a href="#" class="mob-toggle">Administration <i class="fas fa-chevron-down"></i></a>
+    <div class="sub">
+      <a href="staff.html">Principal &amp; Staff</a>
+      <a href="staff.html#library">Library</a>
+    </div>
+  </div>
+  <div class="mobile-item">
+    <a href="#" class="mob-toggle">Programmes <i class="fas fa-chevron-down"></i></a>
+    <div class="sub">
+      <a href="programmes.html#llb3">3-Year LL.B</a>
+      <a href="programmes.html#ballb5">5-Year BA LL.B</a>
+    </div>
+  </div>
+  <div class="mobile-item"><a href="admissions.html">Admissions</a></div>
+  <div class="mobile-item">
+    <a href="#" class="mob-toggle">Gallery <i class="fas fa-chevron-down"></i></a>
+    <div class="sub">
+      <a href="gallery.html#court">Court Visits</a>
+      <a href="gallery.html#prison">Central Prison Visits</a>
+      <a href="gallery.html#moot">Moot Court</a>
+    </div>
+  </div>
+  <div class="mobile-item"><a href="achievements.html">Achievements</a></div>
+  <div class="mobile-item"><a href="contact.html">Contact</a></div>
+</div>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Principal & Staff – Rajiv Gandhi Institute of Law</title>
+  <meta name="description" content="Meet the Principal and Faculty of Rajiv Gandhi Institute of Law, Kakinada."/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <!-- Shared nav/footer styles -->
+  <link rel="stylesheet" href="components/shared.css"/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Loader — fetches nav+footer in parallel with sessionStorage cache -->
+  <script src="components/loader.js"></script>
+
+<style>
+:root {
+  --navy:       #0f2340;
+  --gold:       #c8973a;
+  --gold-light: #e8b96a;
+  --page-bg:    #0b1a2e;
+  --card-bg:    #111e30;
+  --card-hover: #162337;
+  --serif:      'Cormorant Garamond', Georgia, serif;
+  --sans:       'DM Sans', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: #e8e0d5; background: var(--page-bg); overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--page-bg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ══ HERO ══ */
+.page-hero {
+  background: linear-gradient(160deg, #0a1628 0%, #0f2340 55%, #1a3a5c 100%);
+  border-bottom: 1px solid rgba(200,151,58,0.2);
+  padding: 6rem 2rem 3.5rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,151,58,0.1), transparent);
+}
+.hero-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(200,151,58,0.1);
+  animation: pulseRing 6s ease-in-out infinite;
+}
+.hero-ring:nth-child(1) { width: 420px; height: 420px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.hero-ring:nth-child(2) { width: 680px; height: 680px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 2s; }
+@keyframes pulseRing {
+  0%,100% { opacity: 0.3; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 0.1; transform: translate(-50%,-50%) scale(1.04); }
+}
+.hero-label {
+  font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.9rem; position: relative;
+}
+.hero-title {
+  font-family: var(--serif); font-size: clamp(2.4rem,6vw,4rem);
+  font-weight: 700; color: #fff; line-height: 1.1; position: relative;
+}
+.hero-title em { color: var(--gold-light); font-style: italic; }
+.hero-sub {
+  font-size: 0.85rem; color: rgba(232,224,213,0.45);
+  margin-top: 0.7rem; position: relative;
+}
+
+/* ══ BODY ══ */
+.page-body { max-width: 1140px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.sec-label { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.5rem; }
+.sec-label-text { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+.sec-label-line  { flex: 1; height: 1px; background: rgba(200,151,58,0.18); }
+
+/* ══ PRINCIPAL BANNER ══ */
+.principal-banner {
+  background: linear-gradient(118deg, #122040, #1e3a60);
+  border: 1px solid rgba(200,151,58,0.32); border-radius: 14px;
+  padding: 2.2rem 2.8rem; display: flex; align-items: center; gap: 2.2rem;
+  margin-bottom: 3rem; cursor: pointer;
+  transition: transform 0.22s, box-shadow 0.22s;
+  position: relative; overflow: hidden;
+}
+.principal-banner::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.principal-banner::after {
+  content: '\f0e3'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  position: absolute; right: 2.5rem; top: 50%; transform: translateY(-50%);
+  font-size: 7rem; color: rgba(200,151,58,0.05); pointer-events: none;
+}
+.principal-banner:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(0,0,0,0.45); }
+
+.p-avatar {
+  width: 82px; height: 82px; border-radius: 50%; flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #c8973a, #e8b96a);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1.7rem; font-weight: 700; color: #0b1a2e;
+  position: relative;
+}
+.p-avatar::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid rgba(200,151,58,0.5); }
+.p-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.p-info h2 { font-family: var(--serif); font-size: 1.85rem; font-weight: 700; color: #fff; line-height: 1.1; }
+.role-badge {
+  display: inline-block;
+  background: rgba(200,151,58,0.14); border: 1px solid rgba(200,151,58,0.38);
+  color: var(--gold-light); font-size: 0.67rem; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 3px 11px; border-radius: 20px;
+  margin: 0.45rem 0 0.6rem;
+}
+.p-meta { font-size: 0.8rem; color: rgba(232,224,213,0.45); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.p-meta strong { color: rgba(232,224,213,0.78); font-weight: 400; }
+.view-hint { margin-top: 0.85rem; font-size: 0.72rem; color: var(--gold); opacity: 0.75; display: flex; align-items: center; gap: 5px; }
+
+/* ══ FACULTY GRID ══ */
+.fac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem; margin-bottom: 3rem;
+}
+
+/* ══ FACULTY CARD ══ */
+.fac-card {
+  background: var(--card-bg); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 1.4rem 1rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  animation: fadeUp 0.4s ease both;
+  position: relative; overflow: hidden;
+}
+.fac-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  opacity: 0; transition: opacity 0.22s;
+}
+.fac-card.t-prof::before  { background: linear-gradient(90deg,#3b64c8,#6b94f8); }
+.fac-card.t-assoc::before { background: linear-gradient(90deg,#1e8c5a,#40c88a); }
+.fac-card.t-asst::before  { background: linear-gradient(90deg,#c8641e,#f89450); }
+.fac-card:hover {
+  background: var(--card-hover); border-color: rgba(200,151,58,0.3);
+  transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,0.38);
+}
+.fac-card:hover::before { opacity: 1; }
+
+.fac-avatar {
+  width: 62px; height: 62px; border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 700;
+  margin-bottom: 0.9rem; flex-shrink: 0; position: relative;
+}
+.fac-avatar::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 1px solid currentColor; opacity: 0.25; }
+.fac-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.av-prof  { background: #1a2f6a; color: #8bb8f4; }
+.av-assoc { background: #1a3a2a; color: #6ee0b0; }
+.av-asst  { background: #3a1f10; color: #f4a06e; }
+
+.fac-card h4 { font-family: var(--serif); font-size: 0.96rem; font-weight: 600; color: #e8e0d5; line-height: 1.25; margin-bottom: 0.35rem; }
+.fac-desig { font-size: 0.64rem; letter-spacing: 0.09em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; display: inline-block; margin-bottom: 0.28rem; }
+.d-prof  { background: rgba(59,100,200,0.18); color: #8bb8f4; }
+.d-assoc { background: rgba(30,140,90,0.18);  color: #6ee0b0; }
+.d-asst  { background: rgba(200,100,30,0.18); color: #f4a06e; }
+.fac-qual { font-size: 0.73rem; color: rgba(232,224,213,0.42); }
+.fac-exp  { margin-top: 0.55rem; font-size: 0.63rem; padding: 2px 9px; border-radius: 20px; background: rgba(255,255,255,0.05); color: rgba(232,224,213,0.48); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ MODAL ══ */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(4,10,22,0.86); backdrop-filter: blur(5px);
+  z-index: 2000; align-items: center; justify-content: center; padding: 1rem;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: linear-gradient(155deg, #112035, #0e1f36);
+  border: 1px solid rgba(200,151,58,0.28); border-radius: 18px;
+  padding: 2.5rem 2rem; max-width: 430px; width: 100%;
+  position: relative; text-align: center;
+  animation: popIn 0.26s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from { opacity:0; transform:scale(0.87); } to { opacity:1; transform:scale(1); } }
+.modal-close {
+  position: absolute; top: 1rem; right: 1.3rem;
+  background: none; border: none; color: rgba(232,224,213,0.3);
+  font-size: 1.25rem; cursor: pointer; transition: color 0.15s; line-height: 1;
+}
+.modal-close:hover { color: var(--gold); }
+
+.m-avatar {
+  width: 92px; height: 92px; border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1.85rem; font-weight: 700;
+  margin: 0 auto 1.3rem; position: relative;
+}
+.m-avatar::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid currentColor; opacity: 0.28; }
+.m-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.mav-principal { background: linear-gradient(135deg,#c8973a,#e8b96a); color: #0b1a2e; }
+.mav-prof      { background: #1a2f6a; color: #8bb8f4; }
+.mav-assoc     { background: #1a3a2a; color: #6ee0b0; }
+.mav-asst      { background: #3a1f10; color: #f4a06e; }
+
+.m-name  { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 0.4rem; }
+.m-badge { display: inline-block; padding: 3px 14px; border-radius: 20px; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.4rem; }
+.mb-principal { background: rgba(200,151,58,0.15); border: 1px solid rgba(200,151,58,0.4);  color: var(--gold-light); }
+.mb-prof      { background: rgba(59,100,200,0.15); border: 1px solid rgba(59,100,200,0.3);  color: #8bb8f4; }
+.mb-assoc     { background: rgba(30,140,90,0.15);  border: 1px solid rgba(30,140,90,0.3);   color: #6ee0b0; }
+.mb-asst      { background: rgba(200,100,30,0.15); border: 1px solid rgba(200,100,30,0.3);  color: #f4a06e; }
+
+.m-divider { height: 1px; background: linear-gradient(90deg,transparent,rgba(200,151,58,0.28),transparent); margin: 0 0 1.2rem; }
+.m-stats   { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.2rem; }
+.stat-block { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.8rem; }
+.stat-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232,224,213,0.35); margin-bottom: 0.3rem; }
+.stat-value { font-size: 1rem; font-weight: 500; color: rgba(232,224,213,0.85); }
+.m-dept { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 20px; background: rgba(200,151,58,0.09); border: 1px solid rgba(200,151,58,0.22); font-size: 0.74rem; color: var(--gold); margin-bottom: 0.6rem; }
+.m-inst { font-size: 0.68rem; color: rgba(232,224,213,0.28); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 768px) {
+  .page-hero { padding: 5rem 1.5rem 3rem; }
+  .page-body { padding: 2.5rem 1rem 4rem; }
+  .principal-banner { flex-direction: column; text-align: center; padding: 1.8rem 1.5rem; gap: 1.5rem; }
+  .p-meta { justify-content: center; }
+  .view-hint { justify-content: center; }
+  .fac-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
+}
+@media (max-width: 420px) {
+  .fac-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<!-- ══ page-loader() ══ -->  
+<div id="loader-root"></div>
+
+<!-- ══ Navbar() ══ --> 
+<div id="navbar-placeholder"></div>
+
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-label">Rajiv Gandhi Institute of Law · Administration</div>
+  <div class="hero-title">Principal &amp; <em>Faculty</em></div>
+  <div class="hero-sub">Dedicated scholars shaping the next generation of legal minds</div>
+</section>
+
+<!-- ══ BODY ══ -->
+<div class="page-body">
+
+  <div class="sec-label"><span class="sec-label-text">Principal</span><span class="sec-label-line"></span></div>
+  <div class="principal-banner" onclick="openModal('principal')">
+    <div class="p-avatar" id="pAvatar">jp</div>
+    <div class="p-info">
+      <h2>Prof. J Prasad</h2>
+      <div class="role-badge">Professor &amp; Principal</div>
+      <div class="p-meta">
+        <span>Qualification: <strong>Ph.D</strong></span>
+        <span>Experience: <strong>25 Years</strong></span>
+      </div>
+      <div class="view-hint"><i class="fas fa-arrow-right" style="font-size:.65rem"></i> Click to view profile</div>
+    </div>
+  </div>
+
+  <div class="sec-label"><span class="sec-label-text">Professors</span><span class="sec-label-line"></span></div>
+  <div class="fac-grid" id="profGrid"></div>
+
+  <div class="sec-label"><span class="sec-label-text">Associate Professors</span><span class="sec-label-line"></span></div>
+  <div class="fac-grid" id="assocGrid"></div>
+
+  <div class="sec-label"><span class="sec-label-text">Assistant Professors</span><span class="sec-label-line"></span></div>
+  <div class="fac-grid" id="asstGrid"></div>
+
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="overlay" id="overlay" onclick="closeIfBg(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div class="m-avatar" id="mAvatar"></div>
+    <div class="m-name"   id="mName"></div>
+    <div class="m-badge"  id="mBadge"></div>
+    <div class="m-divider"></div>
+    <div class="m-stats">
+      <div class="stat-block"><div class="stat-label">Qualification</div><div class="stat-value" id="mQual"></div></div>
+      <div class="stat-block"><div class="stat-label">Experience</div><div class="stat-value" id="mExp"></div></div>
+    </div>
+    <div class="m-dept" id="mDept"></div>
+    <div class="m-inst">Rajiv Gandhi Institute of Law · Kakinada, AP</div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+
+  <!-- ══ page-loader() ══ --> 
+
+// load loader
+fetch("components/loader.html")
+  .then(res => res.text())
+  .then(html => {
+    const root = document.getElementById("loader-root");
+
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    // inject HTML
+    Array.from(temp.childNodes).forEach(node => {
+      if (node.tagName !== "SCRIPT") {
+        root.appendChild(node);
+      }
+    });
+
+    // execute scripts
+    temp.querySelectorAll("script").forEach(oldScript => {
+      const newScript = document.createElement("script");
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.error("Loader failed:", err));
+
+
+// control loader
+window.addEventListener("load", () => {
+  const checkLoader = setInterval(() => {
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+      loader.style.transition = "opacity 0.5s ease";
+      loader.style.opacity = "0";
+      loader.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        const root = document.getElementById("loader-root");
+        if (root) root.remove(); // ✅ clean removal
+      }, 500);
+
+      clearInterval(checkLoader); // ✅ stop loop
+    }
+  }, 50);
+});
+
+// fallback safety
+setTimeout(() => {
+  const root = document.getElementById("loader-root");
+  if (root) root.remove();
+}, 5000);
+
+
+/* ════ DATA — img paths are relative to site root ════
+   Put staff photos in:  images/staff/<filename>.jpg
+   If a photo is missing or fails to load, initials show automatically.
+════════════════════════════════════════════════════ */
+const PRINCIPAL = {
+  name:'Prof.J.Prasad', img:'images/staff/principal.jpg',
+  initials:'jp', role:'Professor & Principal', tier:'principal',
+  qual:'Ph.D', exp:'25 Years', dept:'Head of Institution'
+};
+const PROFS = [
+  { name:'Dr. Alapati Srinivas',         img:'images/staff/alapati.jpg',   initials:'AS',  role:'Professor', tier:'prof',  qual:'Ph.D', exp:'16 Years', dept:'Faculty of Law' },
+  { name:'Dr. Vegunta Sree Latha',       img:'images/staff/sreelatha.jpg', initials:'VSL', role:'Professor', tier:'prof',  qual:'Ph.D', exp:'22 Years', dept:'Faculty of Law' },
+  { name:'Dr. I V Satyanarayana Murthy', img:'images/staff/ivm.jpg',       initials:'IVM', role:'Professor', tier:'prof',  qual:'Ph.D', exp:'22 Years', dept:'Faculty of Law' },
+];
+const ASSOCS = [
+  { name:'Dr. Y Vasantha Kumari',     img:'images/staff/vasantha.jpg', initials:'YVK', role:'Associate Professor', tier:'assoc', qual:'Ph.D', exp:'18 Years', dept:'Faculty of Law' },
+  { name:'Dr. Kanagala Sanjay Kumar', img:'images/staff/sanjay.jpg',   initials:'KSK', role:'Associate Professor', tier:'assoc', qual:'Ph.D', exp:'11 Years', dept:'Faculty of Law' },
+];
+const ASSTS = [
+  { name:'Vegesna Subbaraju',          img:'images/staff/subbaraju.jpg', initials:'VS',  role:'Assistant Professor', tier:'asst', qual:'M.A Politics',   exp:'19 Years', dept:'Political Science' },
+  { name:'Peethala Govindha Rajulu',   img:'images/staff/pgr.jpg',       initials:'PGR', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'12 Years', dept:'Faculty of Law' },
+  { name:'Y Satya Prasad',             img:'images/staff/ysp.jpg',       initials:'YSP', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'12 Years', dept:'Faculty of Law' },
+  { name:'T Bhanu Prabha',             img:'images/staff/tbp.jpg',       initials:'TBP', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'7 Years',  dept:'Faculty of Law' },
+  { name:'Gubbala Ramyakrishna',       img:'images/staff/gr.jpg',        initials:'GR',  role:'Assistant Professor', tier:'asst', qual:'M.A English',   exp:'8 Years',  dept:'English' },
+  { name:'Gangam Rajender',            img:'images/staff/grj.jpg',       initials:'GRJ', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'7 Years',  dept:'Faculty of Law' },
+  { name:'Dharmavarapu Sridevi',       img:'images/staff/ds.jpg',        initials:'DS',  role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'6 Years',  dept:'Faculty of Law' },
+  { name:'Morukurthi Appala Konda',    img:'images/staff/mak.jpg',       initials:'MAK', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'5 Years',  dept:'Faculty of Law' },
+  { name:'Nalla Rajasekhar',           img:'images/staff/nr.jpg',        initials:'NR',  role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'5 Years',  dept:'Faculty of Law' },
+  { name:'Adapa Sridevi',              img:'images/staff/adr.jpg',       initials:'ADR', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'7 Years',  dept:'Faculty of Law' },
+  { name:'Jaggarlapudi Kotayya',       img:'images/staff/jk.jpg',        initials:'JK',  role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'3 Years',  dept:'Faculty of Law' },
+  { name:'Chakra Varthi Ginjala',      img:'images/staff/cvg.jpg',       initials:'CVG', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'3 Years',  dept:'Faculty of Law' },
+  { name:'Medisetti Rama Mohana Rao',  img:'images/staff/mrm.jpg',       initials:'MRM', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'1 Year',   dept:'Faculty of Law' },
+  { name:'Pavani Vangipuram',          img:'images/staff/pv.jpg',        initials:'PV',  role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'1 Year',   dept:'Faculty of Law' },
+  { name:'Giduturi Nari Amruta Valli', img:'images/staff/gna.jpg',       initials:'GNA', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'1 Year',   dept:'Faculty of Law' },
+  { name:'Ashok Kumar Vase',           img:'images/staff/akv.jpg',       initials:'AKV', role:'Assistant Professor', tier:'asst', qual:'M.A English',   exp:'2 Years',  dept:'English' },
+  { name:'M. Pardha Saradhi',          img:'images/staff/mps.jpg',       initials:'MPS', role:'Assistant Professor', tier:'asst', qual:'M.A Sociology', exp:'5 Years',  dept:'Sociology' },
+  { name:'Swetha Kamal Kamaraju',      img:'images/staff/skk.jpg',       initials:'SKK', role:'Assistant Professor', tier:'asst', qual:'LL.M',           exp:'1 Year',   dept:'Faculty of Law' },
+];
+
+/* ── CSS class maps ── */
+const AV_CLS    = { prof:'av-prof',  assoc:'av-assoc', asst:'av-asst' };
+const DESIG_CLS = { prof:'d-prof',   assoc:'d-assoc',  asst:'d-asst'  };
+const TIER_CLS  = { prof:'t-prof',   assoc:'t-assoc',  asst:'t-asst'  };
+const MAV_CLS   = { principal:'mav-principal', prof:'mav-prof', assoc:'mav-assoc', asst:'mav-asst' };
+const BADGE_CLS = { principal:'mb-principal',  prof:'mb-prof',  assoc:'mb-assoc',  asst:'mb-asst'  };
+
+const registry = []; // for modal lookup
+
+/* ── Avatar inner HTML with photo + initials fallback ── */
+function avatarInner(m) {
+  if (!m.img) return m.initials;
+  const safe = m.initials.replace(/`/g,'').replace(/'/g,"\\'");
+  return `<img src="${m.img}" alt="${m.name}" loading="lazy"
+    onerror="this.parentNode.innerHTML='${safe}'"/>`;
+}
+
+/* ── Build card ── */
+function buildCard(m, i) {
+  const idx = registry.length;
+  registry.push(m);
+  const el = document.createElement('div');
+  el.className = `fac-card ${TIER_CLS[m.tier]}`;
+  el.style.animationDelay = (i * 0.04) + 's';
+  el.innerHTML = `
+    <div class="fac-avatar ${AV_CLS[m.tier]}">${avatarInner(m)}</div>
+    <h4>${m.name}</h4>
+    <div class="fac-desig ${DESIG_CLS[m.tier]}">${m.role}</div>
+    <div class="fac-qual">${m.qual}</div>
+    <div class="fac-exp">${m.exp}</div>
+  `;
+  el.addEventListener('click', () => openModal(idx));
+  return el;
+}
+
+/* ── Render grids using DocumentFragment (single DOM reflow) ── */
+function renderGrid(id, members) {
+  const frag = document.createDocumentFragment();
+  members.forEach((m,i) => frag.appendChild(buildCard(m,i)));
+  document.getElementById(id).appendChild(frag);
+}
+renderGrid('profGrid',  PROFS);
+renderGrid('assocGrid', ASSOCS);
+renderGrid('asstGrid',  ASSTS);
+
+/* ── Principal photo (lazy attempt) ── */
+if (PRINCIPAL.img) {
+  const wrap = document.getElementById('pAvatar');
+  const img  = new Image();
+  img.src   = PRINCIPAL.img;
+  img.alt   = PRINCIPAL.name;
+  img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+  img.onload = () => { wrap.innerHTML = ''; wrap.appendChild(img); };
+}
+
+/* ── Open modal ── */
+function openModal(idx) {
+  const m = (idx === 'principal') ? PRINCIPAL : registry[idx];
+  const avatarEl = document.getElementById('mAvatar');
+  avatarEl.className = 'm-avatar ' + MAV_CLS[m.tier];
+  // show initials first, swap to photo when ready
+  avatarEl.textContent = m.initials;
+  if (m.img) {
+    const img = new Image();
+    img.src = m.img;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    img.onload  = () => { avatarEl.innerHTML = ''; avatarEl.appendChild(img); };
+  }
+  document.getElementById('mName').textContent = m.name;
+  const badge = document.getElementById('mBadge');
+  badge.className   = 'm-badge ' + BADGE_CLS[m.tier];
+  badge.textContent = m.role;
+  document.getElementById('mQual').textContent = m.qual;
+  document.getElementById('mExp').textContent  = m.exp;
+  document.getElementById('mDept').innerHTML   = `<i class="fas fa-building" style="font-size:.7rem"></i> ${m.dept}`;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/* ── Close modal ── */
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeIfBg(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

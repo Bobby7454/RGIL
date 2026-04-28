@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rajiv Gandhi Institute of Law – Kakinada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="stylesheet" href="Components/shared.css"/>
+<link rel="preload" href="components/loader.html" as="fetch" crossorigin="anonymous">
+<script src="components/loader.js"></script> 
+</head>
+<body>
+<!-- ══ page-loader() ══ -->  
+<div id="loader-root"></div>
+
+<!-- ══ NAVBAR — injected by loadComponents() ══ -->
+<div id="navbar-placeholder"></div>
+
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+  </div>
+  <div class="hero-scales"><i class="fas fa-balance-scale"></i></div>
+  <div class="hero-content">
+    <div class="hero-badge">BCI Recognised · Est. Kakinada, Andhra Pradesh</div>
+    <h1>
+      Rajiv Gandhi
+      <em>Institute of Law</em>
+    </h1>
+    <p class="hero-sub">
+      Affiliated to Adikavi Nannaya University. Shaping the next generation of legal professionals with integrity, scholarship, and unwavering commitment to justice.
+    </p>
+    <div class="hero-actions">
+      <a href="admissions.html" class="btn btn-primary">Apply for Admission <i class="fas fa-arrow-right"></i></a>
+      <a href="about.html" class="btn btn-outline">Explore the Institute</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>25+</strong>
+        <span>Years of Excellence</span>
+      </div>
+      <div class="hero-stat">
+        <strong>2</strong>
+        <span>Law Programmes</span>
+      </div>
+      <div class="hero-stat">
+        <strong>500+</strong>
+        <span>Alumni in Practice</span>
+      </div>
+      <div class="hero-stat">
+        <strong>BCI</strong>
+        <span>Recognised</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-label">📢 Announcements</div>
+    <div class="ticker-track">
+      <span class="ticker-item">Admissions Open for 2025–26 Academic Year — Apply Now</span>
+      <span class="ticker-item">National Moot Court Competition — Registrations Closing Soon</span>
+      <span class="ticker-item">Legal Aid Camp at Ramanayyapeta — Community Service Initiative</span>
+      <span class="ticker-item">Results for Semester III Declared — Check Notice Board</span>
+      <span class="ticker-item">Guest Lecture by Hon. Justice (Retd.) K. Ramakrishna — 15 May 2025</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">Admissions Open for 2025–26 Academic Year — Apply Now</span>
+      <span class="ticker-item">National Moot Court Competition — Registrations Closing Soon</span>
+      <span class="ticker-item">Legal Aid Camp at Ramanayyapeta — Community Service Initiative</span>
+      <span class="ticker-item">Results for Semester III Declared — Check Notice Board</span>
+      <span class="ticker-item">Guest Lecture by Hon. Justice (Retd.) K. Ramakrishna — 15 May 2025</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ABOUT STRIP ══ -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-wrap">
+        <div class="about-image">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <div class="about-badge-float">
+          <strong>BCI</strong>
+          <span>Recognised</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-label">About the Institute</span>
+        <h2 class="section-title">A Legacy Rooted in <em>Legal Excellence</em></h2>
+        <p class="section-lead">
+          Rajiv Gandhi Institute of Law, nestled in Kakinada, Andhra Pradesh, has been the cornerstone of legal education in the region — producing advocates, judges, and public servants committed to upholding the rule of law.
+        </p>
+        <div class="about-pillars">
+          <div class="pillar">
+            <h4>Academic Rigour</h4>
+            <p>Comprehensive curriculum aligned with BCI standards and industry needs.</p>
+          </div>
+          <div class="pillar">
+            <h4>Moot Court</h4>
+            <p>State-of-the-art moot court hall for regular mock trials and competitions.</p>
+          </div>
+          <div class="pillar">
+            <h4>Legal Aid</h4>
+            <p>Community-centred legal aid camps and outreach programmes.</p>
+          </div>
+          <div class="pillar">
+            <h4>Placements</h4>
+            <p>Strong network with courts, law firms, and corporate organisations.</p>
+          </div>
+        </div>
+        <a href="about.html" class="btn btn-primary" style="margin-top:2rem;display:inline-flex">
+          Learn More About Us <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROGRAMMES ══ -->
+<section class="programs" id="programs">
+  <div class="container">
+    <span class="section-label">Programmes</span>
+    <h2 class="section-title">Law Programmes <em>We Offer</em></h2>
+    <p class="section-lead">Two distinct pathways to a distinguished legal career, guided by experienced faculty and BCI-approved curriculum.</p>
+    <div class="programs-grid">
+      <div class="prog-card">
+        <div class="prog-card-top">
+          <div class="prog-duration">3 Years</div>
+          <div class="prog-name">LL.B — Bachelor of Laws</div>
+        </div>
+        <div class="prog-body">
+          <p>Designed for graduates from any discipline, the 3-Year LL.B equips students with a thorough grounding in substantive and procedural law, legal research, and courtroom advocacy.</p>
+          <div class="prog-meta">
+            <span class="prog-tag">6 Semesters</span>
+            <span class="prog-tag">Any Graduate</span>
+            <span class="prog-tag">BCI Approved</span>
+          </div>
+          <a href="programmes.html#llb3" class="prog-link">View Details <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-card-top">
+          <div class="prog-duration">5 Years</div>
+          <div class="prog-name">BA LL.B — Integrated Law</div>
+        </div>
+        <div class="prog-body">
+          <p>An integrated programme for students entering directly after Class XII. Combines the rigour of a liberal arts education with professional legal training, producing well-rounded advocates.</p>
+          <div class="prog-meta">
+            <span class="prog-tag">10 Semesters</span>
+            <span class="prog-tag">After Class 12</span>
+            <span class="prog-tag">BCI Approved</span>
+          </div>
+          <a href="programmes.html#ballb5" class="prog-link">View Details <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY CHOOSE US ══ -->
+<section class="why">
+  <div class="container">
+    <span class="section-label" style="color:var(--gold)">Why RGIL</span>
+    <h2 class="section-title" style="color:var(--white)">What Sets Us <em>Apart</em></h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Expert Faculty</h3>
+        <p>Distinguished legal scholars and practising advocates who bring real-world expertise into every classroom session.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-gavel"></i></div>
+        <h3>Moot Court Hall</h3>
+        <p>A fully equipped moot court facility for regular mock trials, competitions, and practical courtroom training.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-book-open"></i></div>
+        <h3>Rich Legal Library</h3>
+        <p>Extensive collection of law reports, commentaries, bare acts, and digital resources to support research.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Internships &amp; Placements</h3>
+        <p>Partnerships with courts, law firms, and corporations to give students real-world exposure from Day One.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-globe"></i></div>
+        <h3>Legal Aid &amp; NSS</h3>
+        <p>Community outreach, legal aid camps, and NSS activities that build empathy, civic sense, and professional ethics.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fas fa-trophy"></i></div>
+        <h3>Competition Record</h3>
+        <p>Consistent recognition in inter-collegiate and national moot court competitions, debates, and sports events.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALLERY STRIP ══ -->
+<section class="gallery-strip">
+  <div class="container">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-title">Life at <em>RGIL</em></h2>
+    <p class="section-lead">From courtroom simulations to community visits, every day at our institute is an exercise in purposeful learning.</p>
+    <div class="gallery-grid">
+      <div class="g-item">
+        <i class="g-icon fas fa-balance-scale"></i>
+        <div class="g-label">Moot Court Sessions</div>
+      </div>
+      <div class="g-item">
+        <i class="g-icon fas fa-university"></i>
+        <div class="g-label">Court Visits</div>
+      </div>
+      <div class="g-item">
+        <i class="g-icon fas fa-hands-helping"></i>
+        <div class="g-label">Legal Aid Camps</div>
+      </div>
+      <div class="g-item">
+        <i class="g-icon fas fa-running"></i>
+        <div class="g-label">Sports &amp; Athletics</div>
+      </div>
+      <div class="g-item">
+        <i class="g-icon fas fa-microphone-alt"></i>
+        <div class="g-label">Conferences &amp; Seminars</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="gallery.html" class="btn btn-primary">View Full Gallery <i class="fas fa-images"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ACHIEVEMENTS ══ -->
+<section class="achievements">
+  <div class="container">
+    <span class="section-label">Achievements</span>
+    <h2 class="section-title">Our <em>Track Record</em></h2>
+    <div class="ach-grid">
+      <div class="ach-card">
+        <strong class="ach-num">25<span>+</span></strong>
+        <span class="ach-label">Years of Excellence</span>
+      </div>
+      <div class="ach-card">
+        <strong class="ach-num">500<span>+</span></strong>
+        <span class="ach-label">Alumni in Active Practice</span>
+      </div>
+      <div class="ach-card">
+        <strong class="ach-num">30<span>+</span></strong>
+        <span class="ach-label">Moot Court Competitions</span>
+      </div>
+      <div class="ach-card">
+        <strong class="ach-num">10<span>+</span></strong>
+        <span class="ach-label">National Recognitions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NOTICES ══ -->
+<section class="notices">
+  <div class="container">
+    <span class="section-label">Notice Board</span>
+    <h2 class="section-title">Latest <em>Updates</em></h2>
+    <div class="notices-grid">
+      <div class="notice-panel">
+        <div class="notice-panel-head">
+          <i class="fas fa-bullhorn"></i>
+          <h3>Notices &amp; Circulars</h3>
+        </div>
+        <div class="notice-list">
+          <div class="notice-item">
+            <div class="notice-date">May 15</div>
+            <div class="notice-text">Guest Lecture by Hon. Justice (Retd.) K. Ramakrishna on Constitutional Law <span>New</span></div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 10</div>
+            <div class="notice-text">Semester III Examination Results Declared — Check Portals</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 05</div>
+            <div class="notice-text">Moot Court National Competition — Team Selection on May 8</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">Apr 28</div>
+            <div class="notice-text">Legal Aid Camp at Ramanayyapeta — Volunteer Registrations Open <span>Ongoing</span></div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">Apr 20</div>
+            <div class="notice-text">Annual Sports Day — Schedule Released</div>
+          </div>
+        </div>
+      </div>
+      <div class="notice-panel">
+        <div class="notice-panel-head">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Events &amp; Activities</h3>
+        </div>
+        <div class="notice-list">
+          <div class="notice-item">
+            <div class="notice-date">Jun 01</div>
+            <div class="notice-text">Admissions Commence — 2025–26 Batch <span>New</span></div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 20</div>
+            <div class="notice-text">HRC Visit — High Court of Andhra Pradesh, Amaravati</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 18</div>
+            <div class="notice-text">NSS Camp — Village Adoption Programme, Kakinada Rural</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 12</div>
+            <div class="notice-text">Central Prison Visit — Criminal Justice Field Study</div>
+          </div>
+          <div class="notice-item">
+            <div class="notice-date">May 02</div>
+            <div class="notice-text">Inter-Collegiate Debate Competition — Results Announced</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER — injected by loadComponents() ══ -->
+<div id="footer-placeholder"></div>
+
+<!-- ══════════════════════════════════
+     SHARED SCRIPTS
+     (nav scroll + hamburger + counters)
+     These run AFTER components are loaded.
+══════════════════════════════════ -->
+<script>
+<!-- ══ page-loader() ══ --> 
+
+fetch("components/loader.html")
+  .then(res => res.text())
+  .then(html => {
+    const root = document.getElementById("loader-root");
+
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    // inject HTML
+    Array.from(temp.childNodes).forEach(node => {
+      if (node.tagName !== "SCRIPT") {
+        root.appendChild(node);
+      }
+    });
+
+    // execute scripts
+    temp.querySelectorAll("script").forEach(oldScript => {
+      const newScript = document.createElement("script");
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.error("Loader failed:", err));
+
+
+// control loader
+window.addEventListener("load", () => {
+  const checkLoader = setInterval(() => {
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+      loader.style.transition = "opacity 0.5s ease";
+      loader.style.opacity = "0";
+      loader.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        const root = document.getElementById("loader-root");
+        if (root) root.remove(); // ✅ clean removal
+      }, 500);
+
+      clearInterval(checkLoader); // ✅ stop loop
+    }
+  }, 50);
+});
+
+// fallback safety
+setTimeout(() => {
+  const root = document.getElementById("loader-root");
+  if (root) root.remove();
+}, 5000);
+
+/* ── Animated counters (achievements section) ── */
+function initCounters() {
+  const counters = document.querySelectorAll('.ach-num');
+  if (!counters.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el     = entry.target;
+        const target = parseInt(el.textContent);
+        const suffix = el.querySelector('span')?.textContent || '';
+        let cur = 0;
+        const step  = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          cur = Math.min(cur + step, target);
+          el.innerHTML = cur + '<span>' + suffix + '</span>';
+          if (cur >= target) clearInterval(timer);
+        }, 30);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => obs.observe(c));
+}
+/* initCounters runs after loader.js injects components */
+document.addEventListener('rgil:ready', initCounters);
+</script>
+
+</body>
+</html>
