@@ -93,8 +93,8 @@
     try {
       /* Parallel fetch — biggest speed win */
       const [nav, foot] = await Promise.all([
-        getCached('components/navbar.html', CACHE_NAV),
-        getCached('components/footer.html', CACHE_FOOT),
+        getCached('Components/navbar.html', CACHE_NAV),
+        getCached('Components/footer.html', CACHE_FOOT),
       ]);
 
       const navEl  = document.getElementById('navbar-placeholder');
