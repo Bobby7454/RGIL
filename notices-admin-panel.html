@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — RGIL Notice Board</title>
+<!-- NO link in navbar to this page. Access by typing URL directly. -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+:root{
+  --navy:#0f2340;--gold:#c8973a;--gold-light:#e8b96a;
+  --cream:#faf7f2;--white:#fff;--text:#1a1a2e;--muted:#5a5a72;
+  --red:#c0392b;--green:#2e7d32;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:#0b1929;min-height:100vh;color:var(--text)}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:1rem;
+  background:linear-gradient(160deg,#0a1628,#0f2340 50%,#1a3a5c);
+}
+.login-card{
+  background:#fff;border-radius:14px;
+  padding:2.8rem 2.5rem;width:100%;max-width:400px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.4);
+}
+.login-logo{
+  text-align:center;margin-bottom:2rem;
+}
+.login-logo .badge{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#c8973a,#e8b96a);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 0.75rem;font-size:1.4rem;color:#0f2340;
+}
+.login-logo h1{font-family:var(--serif);font-size:1.5rem;color:var(--navy);line-height:1.2}
+.login-logo p{font-size:0.75rem;color:var(--muted);margin-top:0.3rem;letter-spacing:0.06em}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:0.72rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
+.field input{
+  width:100%;padding:0.65rem 0.9rem;
+  border:1px solid rgba(0,0,0,0.15);border-radius:6px;
+  font-size:0.9rem;outline:none;transition:border-color 0.2s;
+  font-family:var(--sans);
+}
+.field input:focus{border-color:var(--gold)}
+.btn-login{
+  width:100%;padding:0.8rem;
+  background:var(--gold);color:var(--navy);
+  border:none;border-radius:6px;font-size:0.85rem;
+  font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;transition:background 0.2s;font-family:var(--sans);
+}
+.btn-login:hover{background:var(--gold-light)}
+.login-err{
+  font-size:0.78rem;color:var(--red);
+  margin-top:0.7rem;text-align:center;min-height:1.1em;
+}
+.login-note{font-size:0.7rem;color:var(--muted);text-align:center;margin-top:1.2rem}
+
+/* ── ADMIN PANEL ── */
+#admin-panel{display:none;min-height:100vh;background:var(--cream)}
+
+.admin-nav{
+  background:var(--navy);padding:0 2rem;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(200,151,58,0.2);
+  position:sticky;top:0;z-index:100;
+}
+.admin-nav-brand{
+  font-family:var(--serif);font-size:1.1rem;font-weight:700;
+  color:#fff;display:flex;align-items:center;gap:0.6rem;
+}
+.admin-nav-brand i{color:var(--gold);font-size:0.9rem}
+.admin-nav-right{display:flex;align-items:center;gap:1rem}
+.admin-user{font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em}
+.btn-logout{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.7);padding:5px 14px;border-radius:4px;
+  font-size:0.75rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);
+}
+.btn-logout:hover{background:rgba(200,0,0,0.2);border-color:rgba(200,0,0,0.4);color:#fff}
+
+.admin-body{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem}
+
+.admin-grid{display:grid;grid-template-columns:380px 1fr;gap:2rem;align-items:start}
+
+/* ADD FORM */
+.form-card{
+  background:#fff;border-radius:10px;
+  border:1px solid rgba(0,0,0,0.07);
+  overflow:hidden;position:sticky;top:76px;
+}
+.form-card-head{
+  background:var(--navy);padding:1rem 1.5rem;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.form-card-head i{color:var(--gold)}
+.form-card-head h2{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff}
+.form-body{padding:1.5rem}
+.adm-field{margin-bottom:1rem}
+.adm-field label{
+  display:block;font-size:0.68rem;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:4px;
+}
+.adm-field input,.adm-field select,.adm-field textarea{
+  width:100%;padding:0.55rem 0.75rem;
+  border:1px solid rgba(0,0,0,0.15);border-radius:5px;
+  font-size:0.86rem;color:var(--text);outline:none;
+  transition:border-color 0.2s;font-family:var(--sans);
+}
+.adm-field input:focus,.adm-field select:focus,.adm-field textarea:focus{border-color:var(--gold)}
+.btn-add{
+  width:100%;padding:0.75rem;
+  background:var(--gold);color:var(--navy);
+  border:none;border-radius:5px;font-size:0.82rem;font-weight:600;
+  letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;
+  transition:background 0.2s;font-family:var(--sans);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-add:hover{background:var(--gold-light)}
+.form-msg{font-size:0.78rem;margin-top:0.6rem;min-height:1.1em;text-align:center}
+.form-msg.ok{color:var(--green)} .form-msg.err{color:var(--red)}
+
+/* NOTICES LIST */
+.list-card{background:#fff;border-radius:10px;border:1px solid rgba(0,0,0,0.07);overflow:hidden}
+.list-head{
+  background:var(--navy);padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.list-head-left{display:flex;align-items:center;gap:0.6rem}
+.list-head-left i{color:var(--gold)}
+.list-head-left h2{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff}
+.tab-btns{display:flex;gap:6px}
+.tab-btn{
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.6);padding:4px 12px;border-radius:20px;
+  font-size:0.72rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);
+  letter-spacing:0.06em;
+}
+.tab-btn.active{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:600}
+
+.notice-rows{padding:0.5rem 0;min-height:200px}
+.n-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:0.85rem 1.5rem;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  transition:background 0.15s;
+}
+.n-row:last-child{border-bottom:none}
+.n-row:hover{background:var(--cream)}
+.n-date{font-size:0.7rem;color:var(--gold);font-weight:500;white-space:nowrap;margin-top:2px;min-width:48px}
+.n-text{font-size:0.84rem;color:var(--text);line-height:1.5;flex:1}
+.n-badge{
+  display:inline-block;font-size:0.62rem;
+  background:rgba(200,151,58,0.12);color:var(--gold);
+  padding:1px 7px;border-radius:20px;margin-left:6px;
+}
+.n-type{font-size:0.65rem;color:var(--muted);margin-top:3px;display:block}
+.btn-del{
+  background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);
+  color:var(--red);padding:4px 10px;border-radius:4px;
+  font-size:0.75rem;cursor:pointer;transition:all 0.2s;flex-shrink:0;
+  font-family:var(--sans);
+}
+.btn-del:hover{background:rgba(192,57,43,0.18);border-color:rgba(192,57,43,0.5)}
+.empty-msg{padding:2.5rem;text-align:center;font-size:0.84rem;color:var(--muted)}
+.loading-msg{padding:2.5rem;text-align:center;font-size:0.84rem;color:var(--muted)}
+
+@media(max-width:800px){
+  .admin-grid{grid-template-columns:1fr}
+  .form-card{position:static}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="badge"><i class="fas fa-balance-scale"></i></div>
+      <h1>Notice Board Admin</h1>
+      <p>RAJIV GANDHI INSTITUTE OF LAW</p>
+    </div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="inp-user" autocomplete="username" placeholder="Enter username"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="inp-pass" autocomplete="current-password" placeholder="Enter password"/>
+    </div>
+    <button class="btn-login" id="btn-login">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-note">This page is for authorised staff only.</div>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL (shown after login) ══ -->
+<div id="admin-panel">
+
+  <nav class="admin-nav">
+    <div class="admin-nav-brand">
+      <i class="fas fa-balance-scale"></i>
+      RGIL · Notice Board Admin
+    </div>
+    <div class="admin-nav-right">
+      <span class="admin-user" id="admin-username"></span>
+      <button class="btn-logout" id="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+    <div class="admin-grid">
+
+      <!-- ── ADD NOTICE FORM ── -->
+      <div class="form-card">
+        <div class="form-card-head">
+          <i class="fas fa-plus-circle"></i>
+          <h2>Add Notice</h2>
+        </div>
+        <div class="form-body">
+
+          <div class="adm-field">
+            <label>Panel</label>
+            <select id="adm-panel">
+              <option value="notices">Notices &amp; Circulars</option>
+              <option value="events">Events &amp; Activities</option>
+            </select>
+          </div>
+
+          <div class="adm-field">
+            <label>Display Date <small style="text-transform:none;letter-spacing:0;color:#888">(e.g. May 15)</small></label>
+            <input type="text" id="adm-date" placeholder="May 15"/>
+          </div>
+
+          <div class="adm-field">
+            <label>Notice Text</label>
+            <input type="text" id="adm-text" placeholder="Enter notice or event text…"/>
+          </div>
+
+          <div class="adm-field">
+            <label>Type</label>
+            <select id="adm-type">
+              <option value="text">Text only</option>
+              <option value="link">Link (go to page)</option>
+              <option value="download">Download (PDF / file)</option>
+            </select>
+          </div>
+
+          <div class="adm-field" id="adm-href-row" style="display:none">
+            <label>URL or File path</label>
+            <input type="text" id="adm-href" placeholder="e.g. notices.html or assets/result.pdf"/>
+          </div>
+
+          <div class="adm-field">
+            <label>Badge <small style="text-transform:none;letter-spacing:0;color:#888">(optional)</small></label>
+            <select id="adm-badge">
+              <option value="">None</option>
+              <option value="New">New</option>
+              <option value="Ongoing">Ongoing</option>
+            </select>
+          </div>
+
+          <button class="btn-add" id="btn-add">
+            <i class="fas fa-plus"></i> Add Notice
+          </button>
+          <div class="form-msg" id="form-msg"></div>
+
+        </div>
+      </div>
+
+      <!-- ── NOTICES LIST ── -->
+      <div class="list-card">
+        <div class="list-head">
+          <div class="list-head-left">
+            <i class="fas fa-list"></i>
+            <h2>All Notices</h2>
+          </div>
+          <div class="tab-btns">
+            <button class="tab-btn active" data-panel="notices">Notices</button>
+            <button class="tab-btn" data-panel="events">Events</button>
+          </div>
+        </div>
+        <div class="notice-rows" id="notice-rows">
+          <div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   RGIL Admin Panel Script
+   - Login → stores JWT in memory (not localStorage)
+   - All API calls use Authorization: Bearer <token>
+   - Token never touches localStorage / visible to users
+══════════════════════════════════════════════════════ */
+
+// 🔧 Change this to your server URL when deploying
+const API = 'http://localhost:5000/api';
+
+/* Token stored only in memory — disappears on tab close */
+let TOKEN = null;
+let currentPanel = 'notices';
+let allNotices   = [];
+
+/* ── DOM refs ── */
+const loginScreen  = document.getElementById('login-screen');
+const adminPanel   = document.getElementById('admin-panel');
+const loginErr     = document.getElementById('login-err');
+const adminUser    = document.getElementById('admin-username');
+const noticeRows   = document.getElementById('notice-rows');
+const formMsg      = document.getElementById('form-msg');
+
+/* ── LOGIN ── */
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+async function doLogin() {
+  const username = document.getElementById('inp-user').value.trim();
+  const password = document.getElementById('inp-pass').value;
+  loginErr.textContent = '';
+
+  if (!username || !password) { loginErr.textContent = 'Enter username and password.'; return; }
+
+  try {
+    const res  = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { loginErr.textContent = data.error || 'Login failed.'; return; }
+
+    TOKEN = data.token;
+    adminUser.textContent = `Logged in as: ${username}`;
+    loginScreen.style.display  = 'none';
+    adminPanel.style.display   = 'block';
+    document.getElementById('inp-pass').value = ''; // clear password field
+    fetchNotices();
+  } catch (err) {
+    loginErr.textContent = 'Cannot connect to server. Is the backend running?';
+  }
+}
+
+/* ── LOGOUT ── */
+document.getElementById('btn-logout').addEventListener('click', () => {
+  TOKEN = null;
+  allNotices = [];
+  loginScreen.style.display  = 'flex';
+  adminPanel.style.display   = 'none';
+  document.getElementById('inp-user').value = '';
+  loginErr.textContent = '';
+});
+
+/* ── TABS ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPanel = btn.dataset.panel;
+    renderRows();
+  });
+});
+
+/* ── FETCH all notices ── */
+async function fetchNotices() {
+  noticeRows.innerHTML = '<div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>';
+  try {
+    const res  = await fetch(`${API}/notices`, {
+      headers: { 'Authorization': `Bearer ${TOKEN}` }
+    });
+    allNotices = await res.json();
+    renderRows();
+  } catch {
+    noticeRows.innerHTML = '<div class="loading-msg" style="color:#c0392b">Failed to load notices.</div>';
+  }
+}
+
+/* ── RENDER rows for current tab ── */
+function renderRows() {
+  const filtered = allNotices.filter(n => n.panel === currentPanel);
+  if (!filtered.length) {
+    noticeRows.innerHTML = '<div class="empty-msg">No entries yet.</div>';
+    return;
+  }
+  noticeRows.innerHTML = '';
+  filtered.forEach(n => {
+    const row = document.createElement('div');
+    row.className = 'n-row';
+    row.innerHTML = `
+      <div class="n-date">${escHtml(n.date)}</div>
+      <div class="n-text">
+        ${escHtml(n.text)}
+        ${n.badge ? `<span class="n-badge">${escHtml(n.badge)}</span>` : ''}
+        <span class="n-type">${typeLabel(n)}</span>
+      </div>
+      <button class="btn-del" data-id="${n._id}">
+        <i class="fas fa-trash"></i> Delete
+      </button>
+    `;
+    row.querySelector('.btn-del').addEventListener('click', () => deleteNotice(n._id, n.text));
+    noticeRows.appendChild(row);
+  });
+}
+
+function typeLabel(n) {
+  if (n.type === 'link')     return `↗ Links to: ${n.href}`;
+  if (n.type === 'download') return `⬇ Downloads: ${n.href}`;
+  return 'Text only';
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── DELETE ── */
+async function deleteNotice(id, text) {
+  if (!confirm(`Delete this notice?\n\n"${text}"`)) return;
+  try {
+    const res = await fetch(`${API}/notices/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${TOKEN}` }
+    });
+    if (!res.ok) { alert('Delete failed.'); return; }
+    allNotices = allNotices.filter(n => n._id !== id);
+    renderRows();
+  } catch {
+    alert('Error connecting to server.');
+  }
+}
+
+/* ── SHOW/HIDE href field ── */
+document.getElementById('adm-type').addEventListener('change', function() {
+  document.getElementById('adm-href-row').style.display = this.value === 'text' ? 'none' : 'block';
+});
+
+/* ── ADD NOTICE ── */
+document.getElementById('btn-add').addEventListener('click', addNotice);
+
+async function addNotice() {
+  const panel = document.getElementById('adm-panel').value;
+  const date  = document.getElementById('adm-date').value.trim();
+  const text  = document.getElementById('adm-text').value.trim();
+  const type  = document.getElementById('adm-type').value;
+  const href  = document.getElementById('adm-href').value.trim();
+  const badge = document.getElementById('adm-badge').value;
+
+  showMsg('', '');
+
+  if (!date || !text) { showMsg('Date and text are required.', 'err'); return; }
+  if (type !== 'text' && !href) { showMsg('Enter a URL or file path.', 'err'); return; }
+
+  try {
+    const res  = await fetch(`${API}/notices`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${TOKEN}`
+      },
+      body: JSON.stringify({ panel, date, text, type, href, badge })
+    });
+    const data = await res.json();
+    if (!res.ok) { showMsg(data.error || 'Failed to add.', 'err'); return; }
+
+    allNotices.unshift(data);
+    renderRows();
+    /* Clear form */
+    document.getElementById('adm-date').value  = '';
+    document.getElementById('adm-text').value  = '';
+    document.getElementById('adm-href').value  = '';
+    document.getElementById('adm-badge').value = '';
+    showMsg('✓ Notice added!', 'ok');
+    setTimeout(() => showMsg('', ''), 3000);
+  } catch {
+    showMsg('Server error. Is the backend running?', 'err');
+  }
+}
+
+function showMsg(text, type) {
+  formMsg.textContent = text;
+  formMsg.className   = `form-msg ${type}`;
+}
+</script>
+</body>
+</html>

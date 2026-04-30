@@ -248,7 +248,7 @@
   </div>
 </section>
 
-<!-- ══ NOTICES ══ -->
+<!-- notices section — items fetched from API -->
 <section class="notices">
   <div class="container">
     <span class="section-label">Notice Board</span>
@@ -259,18 +259,42 @@
           <i class="fas fa-bullhorn"></i>
           <h3>Notices &amp; Circulars</h3>
         </div>
-        <div class="notice-list" id="notice-list"></div>
+        <!-- scrollable list — max 5 visible, scroll for more -->
+        <div class="notice-list notice-list--scroll" id="notice-list">
+          <div class="notice-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+        </div>
       </div>
       <div class="notice-panel">
         <div class="notice-panel-head">
           <i class="fas fa-calendar-alt"></i>
           <h3>Events &amp; Activities</h3>
         </div>
-        <div class="notice-list" id="event-list"></div>
+        <div class="notice-list notice-list--scroll" id="event-list">
+          <div class="notice-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+/* Scrollable notice list — shows ~5 rows then scroll */
+.notice-list--scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+.notice-list--scroll::-webkit-scrollbar { width: 4px; }
+.notice-list--scroll::-webkit-scrollbar-track { background: transparent; }
+.notice-list--scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+.notice-loading {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+</style>
 
 <div id="footer-placeholder"></div>
 
@@ -304,71 +328,72 @@
   /* render twice for seamless CSS loop */
   [...TICKER_ITEMS, ...TICKER_ITEMS].forEach(item => track.appendChild(makeItem(item)));
 })();
-/* ── Build notice & event panels ── */
-(function buildNotices() {
-  function renderList(items, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container || !items) return;
+/* ── Notice Board — fetch from backend API ── */
+(function loadNotices() {
+  const API = 'http://localhost:5000/api/notices'; // 🔧 Change to your server URL in production
 
-    items.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'notice-item';
+  function makeRow(item) {
+    const row = document.createElement('div');
+    row.className = 'notice-item';
 
-      /* if it's a link or download, wrap in <a> */
-      let inner;
-      if ((item.type === 'link' || item.type === 'download') && item.href) {
-        inner = document.createElement('a');
-        inner.href = item.href;
-        inner.style.cssText = 'display:contents;color:inherit;text-decoration:none';
-        if (item.type === 'download') inner.setAttribute('download', '');
-        row.style.cursor = 'pointer';
-        row.addEventListener('mouseenter', () => row.style.background = 'var(--cream)');
-        row.addEventListener('mouseleave', () => row.style.background = '');
-      }
+    if ((item.type === 'link' || item.type === 'download') && item.href) {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', () => {
+        if (item.type === 'download') {
+          const a = document.createElement('a');
+          a.href = item.href; a.download = ''; a.click();
+        } else {
+          window.location.href = item.href;
+        }
+      });
+    }
 
-      const date = document.createElement('div');
-      date.className = 'notice-date';
-      date.textContent = item.date;
+    const date = document.createElement('div');
+    date.className = 'notice-date';
+    date.textContent = item.date;
 
-      const textWrap = document.createElement('div');
-      textWrap.className = 'notice-text';
-      textWrap.textContent = item.text;
+    const textWrap = document.createElement('div');
+    textWrap.className = 'notice-text';
+    textWrap.textContent = item.text;
 
-      /* type icon */
-      if (item.type === 'download') {
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-download';
-        icon.style.cssText = 'margin-left:6px;font-size:0.65em;color:var(--gold);opacity:0.8';
-        textWrap.appendChild(icon);
-      } else if (item.type === 'link') {
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-arrow-right';
-        icon.style.cssText = 'margin-left:6px;font-size:0.65em;color:var(--gold);opacity:0.8';
-        textWrap.appendChild(icon);
-      }
+    if (item.type === 'download') {
+      textWrap.insertAdjacentHTML('beforeend', ' <i class="fas fa-download" style="font-size:0.65em;color:var(--gold)"></i>');
+    } else if (item.type === 'link') {
+      textWrap.insertAdjacentHTML('beforeend', ' <i class="fas fa-arrow-right" style="font-size:0.65em;color:var(--gold)"></i>');
+    }
 
-      /* badge */
-      if (item.badge) {
-        const badge = document.createElement('span');
-        badge.textContent = item.badge;
-        textWrap.appendChild(badge);
-      }
+    if (item.badge) {
+      const badge = document.createElement('span');
+      badge.textContent = item.badge;
+      textWrap.appendChild(badge);
+    }
 
-      if (inner) {
-        inner.appendChild(date);
-        inner.appendChild(textWrap);
-        row.appendChild(inner);
-      } else {
-        row.appendChild(date);
-        row.appendChild(textWrap);
-      }
-
-      container.appendChild(row);
-    });
+    row.appendChild(date);
+    row.appendChild(textWrap);
+    return row;
   }
 
-  renderList(NOTICE_ITEMS, 'notice-list');
-  renderList(EVENT_ITEMS, 'event-list');
+  fetch(API)
+    .then(r => r.json())
+    .then(data => {
+      const noticeList = document.getElementById('notice-list');
+      const eventList  = document.getElementById('event-list');
+      noticeList.innerHTML = '';
+      eventList.innerHTML  = '';
+
+      const notices = data.filter(n => n.panel === 'notices');
+      const events  = data.filter(n => n.panel === 'events');
+
+      if (notices.length) notices.forEach(n => noticeList.appendChild(makeRow(n)));
+      else noticeList.innerHTML = '<div class="notice-loading">No notices at this time.</div>';
+
+      if (events.length) events.forEach(n => eventList.appendChild(makeRow(n)));
+      else eventList.innerHTML = '<div class="notice-loading">No events at this time.</div>';
+    })
+    .catch(() => {
+      document.getElementById('notice-list').innerHTML = '<div class="notice-loading">Could not load notices.</div>';
+      document.getElementById('event-list').innerHTML  = '<div class="notice-loading">Could not load events.</div>';
+    });
 })();
 /* ── Loader injection ── */
 fetch("Components/loader.html")

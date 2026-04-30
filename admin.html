@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Admin Login</h2>
+
+<input id="user" placeholder="Username"><br><br>
+<input id="pass" type="password" placeholder="Password"><br><br>
+<button onclick="doLogin()">Login</button>
+
+<script type="module">
+import { login, saveToken } from "./Components/api.js";
+
+window.doLogin = async function () {
+  const username = document.getElementById("user").value;
+  const password = document.getElementById("pass").value;
+
+  const res = await login(username, password);
+
+  if (res.token) {
+    saveToken(res.token);
+    alert("Login success");
+  } else {
+    alert(res.error);
+  }
+};
+</script>
+
+</body>
+</html>
