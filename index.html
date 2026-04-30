@@ -311,7 +311,7 @@
 <script>
 /* ── Build ticker DOM — do not edit below this line ── */
 (function loadTicker() {
-  const API = 'http://localhost:5000/api/ticker';
+  const API = 'https://rgil-api.onrender.com/api/ticker';
   const track = document.getElementById('ticker-container');
 
   if (!track) return;
@@ -363,7 +363,7 @@
 
 /* ── Notice Board — fetch from backend API ── */
 (function loadNotices() {
-  const API = 'http://localhost:5000/api/notices'; // 🔧 Change to your server URL in production
+  const API = 'https://rgil-api.onrender.com/api/notices'; // 🔧 Change to your server URL in production
 
   function makeRow(item) {
     const row = document.createElement('div');
