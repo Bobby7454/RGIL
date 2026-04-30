@@ -79,35 +79,55 @@
 </div>
 
 <script>
+(function () {
+  const DEG = Math.PI / 180;
+  const PAN_AMP = 12;     // swing angle
+  const PERIOD = 2000;
 
-(function(){
-  const DEG=Math.PI/180,PAN_LEN=12,BEAM_L_X=10,BEAM_R_X=54,PIVOT_Y=18,BEAM_AMP=10,PERIOD=2000;
-  function animate(t){
-    const phase=(t%PERIOD)/PERIOD*2*Math.PI;
-    const rad=BEAM_AMP*Math.sin(phase)*DEG;
-    const cosA=Math.cos(rad),sinA=Math.sin(rad);
-    const lx=32+(BEAM_L_X-32)*cosA, ly=PIVOT_Y+(BEAM_L_X-32)*sinA;
-    const rx=32+(BEAM_R_X-32)*cosA, ry=PIVOT_Y+(BEAM_R_X-32)*sinA;
-    const lCy2=ly+PAN_LEN, rCy2=ry+PAN_LEN;
-    const PW=4;
-    document.getElementById('beam').setAttribute('x1',lx);
-    document.getElementById('beam').setAttribute('y1',ly);
-    document.getElementById('beam').setAttribute('x2',rx);
-    document.getElementById('beam').setAttribute('y2',ry);
-    document.getElementById('lChain').setAttribute('x1',lx);
-    document.getElementById('lChain').setAttribute('y1',ly);
-    document.getElementById('lChain').setAttribute('x2',lx);
-    document.getElementById('lChain').setAttribute('y2',lCy2);
-    document.getElementById('rChain').setAttribute('x1',rx);
-    document.getElementById('rChain').setAttribute('y1',ry);
-    document.getElementById('rChain').setAttribute('x2',rx);
-    document.getElementById('rChain').setAttribute('y2',rCy2);
-    document.getElementById('lPan').setAttribute('d',`M${lx-PW} ${lCy2} Q${lx} ${lCy2+5} ${lx+PW} ${lCy2}Z`);
-    document.getElementById('rPan').setAttribute('d',`M${rx-PW} ${rCy2} Q${rx} ${rCy2+5} ${rx+PW} ${rCy2}Z`);
+  const beam = document.getElementById('beam');
+  const lChain = document.getElementById('lChain');
+  const rChain = document.getElementById('rChain');
+  const lPan = document.getElementById('lPan');
+  const rPan = document.getElementById('rPan');
+
+  function animate(t) {
+    const phase = (t % PERIOD) / PERIOD * 2 * Math.PI;
+
+    const angle = Math.sin(phase) * PAN_AMP * DEG;
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+
+    const lx = 32 + (10 - 32) * cosA;
+    const ly = 18 + (10 - 32) * sinA;
+
+    const rx = 32 + (54 - 32) * cosA;
+    const ry = 18 + (54 - 32) * sinA;
+
+    const lCy = ly + 12;
+    const rCy = ry + 12;
+
+    beam.setAttribute('x1', lx);
+    beam.setAttribute('y1', ly);
+    beam.setAttribute('x2', rx);
+    beam.setAttribute('y2', ry);
+
+    lChain.setAttribute('x1', lx);
+    lChain.setAttribute('y1', ly);
+    lChain.setAttribute('x2', lx);
+    lChain.setAttribute('y2', lCy);
+
+    rChain.setAttribute('x1', rx);
+    rChain.setAttribute('y1', ry);
+    rChain.setAttribute('x2', rx);
+    rChain.setAttribute('y2', rCy);
+
+    const w = 4;
+    lPan.setAttribute('d', `M${lx-w} ${lCy} Q${lx} ${lCy+5} ${lx+w} ${lCy}Z`);
+    rPan.setAttribute('d', `M${rx-w} ${rCy} Q${rx} ${rCy+5} ${rx+w} ${rCy}Z`);
+
     requestAnimationFrame(animate);
   }
+
   requestAnimationFrame(animate);
 })();
-
-
 </script>

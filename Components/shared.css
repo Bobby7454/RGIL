@@ -298,11 +298,10 @@ ul    { list-style: none; }
   letter-spacing: 0.1em; text-transform: uppercase;
   flex-shrink: 0; white-space: nowrap; margin-right: 1rem;z-index: 1;
 }
-.ticker-track { display: flex; gap: 3rem; animation: ticker 38s linear infinite; white-space: nowrap; }
+#ticker-container { display: flex; gap: 3rem; animation: ticker 38s linear infinite; white-space: nowrap; }
 .ticker-item  { font-size: 0.8rem; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
 .ticker-item::before { content: '◆'; font-size: 0.5rem; color: var(--navy); }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-/* clickable ticker items */
 
 .ticker-item--link {
   color: inherit;

@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Admin — RGIL Notice Board</title>
-<!-- NO link in navbar to this page. Access by typing URL directly. -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
@@ -12,175 +11,220 @@
   --navy:#0f2340;--gold:#c8973a;--gold-light:#e8b96a;
   --cream:#faf7f2;--white:#fff;--text:#1a1a2e;--muted:#5a5a72;
   --red:#c0392b;--green:#2e7d32;
-  --serif:'Cormorant Garamond',serif;
-  --sans:'DM Sans',sans-serif;
+  --serif:'Cormorant Garamond',serif;--sans:'DM Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:#0b1929;min-height:100vh;color:var(--text)}
 
-/* ── LOGIN SCREEN ── */
-#login-screen{
+/* ══ SPINNER OVERLAY — shown during API calls ══ */
+#api-loader{
+  display:none;position:fixed;inset:0;z-index:8888;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  background:rgba(8,12,22,0.5);
+}
+#api-loader.show{display:flex}
+/* PAGE LOADER */
+#page-loader{
+  position:fixed;inset:0;z-index:9999;
   display:flex;align-items:center;justify-content:center;
-  min-height:100vh;padding:1rem;
-  background:linear-gradient(160deg,#0a1628,#0f2340 50%,#1a3a5c);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(8,12,22,0.55);
+  transition:opacity 0.5s ease;
 }
-.login-card{
-  background:#fff;border-radius:14px;
-  padding:2.8rem 2.5rem;width:100%;max-width:400px;
-  box-shadow:0 24px 64px rgba(0,0,0,0.4);
-}
-.login-logo{
-  text-align:center;margin-bottom:2rem;
-}
-.login-logo .badge{
-  width:52px;height:52px;border-radius:50%;
-  background:linear-gradient(135deg,#c8973a,#e8b96a);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 0.75rem;font-size:1.4rem;color:#0f2340;
-}
+.lw-corner{position:absolute;width:12px;height:12px;border-color:rgba(200,151,58,0.3);border-style:solid}
+.lw-corner.tl{top:28px;left:28px;border-width:1px 0 0 1px}
+.lw-corner.tr{top:28px;right:28px;border-width:1px 1px 0 0}
+.lw-corner.bl{bottom:28px;left:28px;border-width:0 0 1px 1px}
+.lw-corner.br{bottom:28px;right:28px;border-width:0 1px 1px 0}
+.lw-icon{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center}
+.lw-svg-ring{position:absolute;width:110px;height:110px}
+.lw-track{stroke:rgba(200,151,58,0.12)}
+.lw-arc{stroke:#c8973a;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:80;animation:lw-spin 1.6s cubic-bezier(0.4,0,0.6,1) infinite;transform-origin:center}
+@keyframes lw-spin{0%{transform:rotate(0deg);stroke-dashoffset:80}50%{stroke-dashoffset:250}100%{transform:rotate(360deg);stroke-dashoffset:80}}
+.lw-scale{position:absolute;width:60px;height:60px}
+.lw-shimmer{position:absolute;bottom:-42px;left:50%;transform:translateX(-50%);width:1px;height:22px;background:linear-gradient(to bottom,rgba(200,151,58,0.7),transparent)}
+.lw-label{position:absolute;bottom:-76px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.lw-label span{font-family:var(--serif);font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,151,58,0.85);display:block;margin-bottom:7px}
+.lw-dots{display:flex;justify-content:center;gap:5px}
+.lw-dot{width:4px;height:4px;border-radius:50%;background:#c8973a;opacity:.2;animation:lw-dp 1.4s ease-in-out infinite}
+.lw-dot:nth-child(2){animation-delay:.25s}.lw-dot:nth-child(3){animation-delay:.5s}
+@keyframes lw-dp{0%,100%{opacity:.2}50%{opacity:.9}}
+
+/* ══ LOGIN ══ */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;background:linear-gradient(160deg,#0a1628,#0f2340 50%,#1a3a5c)}
+.login-card{background:#fff;border-radius:14px;padding:2.8rem 2.5rem;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.4);animation:fadeUp 0.5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{text-align:center;margin-bottom:2rem}
+.login-logo .badge{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#c8973a,#e8b96a);display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;font-size:1.4rem;color:#0f2340}
 .login-logo h1{font-family:var(--serif);font-size:1.5rem;color:var(--navy);line-height:1.2}
-.login-logo p{font-size:0.75rem;color:var(--muted);margin-top:0.3rem;letter-spacing:0.06em}
-.field{margin-bottom:1.1rem}
-.field label{display:block;font-size:0.72rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
-.field input{
-  width:100%;padding:0.65rem 0.9rem;
-  border:1px solid rgba(0,0,0,0.15);border-radius:6px;
-  font-size:0.9rem;outline:none;transition:border-color 0.2s;
-  font-family:var(--sans);
-}
+.login-logo p{font-size:0.72rem;color:var(--muted);margin-top:0.3rem;letter-spacing:0.06em}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:2.5rem}
+.pw-toggle{position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0;line-height:1;transition:color 0.2s}
+.pw-toggle:hover{color:var(--navy)}
+.field input{width:100%;padding:0.65rem 0.9rem;border:1px solid rgba(0,0,0,0.15);border-radius:6px;font-size:0.9rem;outline:none;transition:border-color 0.2s;font-family:var(--sans)}
 .field input:focus{border-color:var(--gold)}
-.btn-login{
-  width:100%;padding:0.8rem;
-  background:var(--gold);color:var(--navy);
-  border:none;border-radius:6px;font-size:0.85rem;
-  font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
-  cursor:pointer;transition:background 0.2s;font-family:var(--sans);
-}
-.btn-login:hover{background:var(--gold-light)}
-.login-err{
-  font-size:0.78rem;color:var(--red);
-  margin-top:0.7rem;text-align:center;min-height:1.1em;
-}
-.login-note{font-size:0.7rem;color:var(--muted);text-align:center;margin-top:1.2rem}
+.btn-login{width:100%;padding:0.82rem;background:var(--gold);color:var(--navy);border:none;border-radius:6px;font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,transform 0.15s;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-login:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-login.loading{opacity:0.7;pointer-events:none}
+.login-err{font-size:0.78rem;color:var(--red);margin-top:0.7rem;text-align:center;min-height:1.1em}
+.login-note{font-size:0.68rem;color:var(--muted);text-align:center;margin-top:1.2rem}
 
-/* ── ADMIN PANEL ── */
+/* ══ ADMIN PANEL ══ */
 #admin-panel{display:none;min-height:100vh;background:var(--cream)}
-
-.admin-nav{
-  background:var(--navy);padding:0 2rem;height:60px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid rgba(200,151,58,0.2);
-  position:sticky;top:0;z-index:100;
-}
-.admin-nav-brand{
-  font-family:var(--serif);font-size:1.1rem;font-weight:700;
-  color:#fff;display:flex;align-items:center;gap:0.6rem;
-}
-.admin-nav-brand i{color:var(--gold);font-size:0.9rem}
+.admin-nav{background:var(--navy);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,151,58,0.2);position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.3)}
+.admin-nav-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:0.6rem}
+.admin-nav-brand i{color:var(--gold)}
 .admin-nav-right{display:flex;align-items:center;gap:1rem}
-.admin-user{font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em}
-.btn-logout{
-  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
-  color:rgba(255,255,255,0.7);padding:5px 14px;border-radius:4px;
-  font-size:0.75rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);
-}
-.btn-logout:hover{background:rgba(200,0,0,0.2);border-color:rgba(200,0,0,0.4);color:#fff}
+.admin-user{font-size:0.72rem;color:rgba(255,255,255,0.45);letter-spacing:0.05em}
+.btn-logout{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);padding:5px 14px;border-radius:4px;font-size:0.73rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans)}
+.btn-logout:hover{background:rgba(200,0,0,0.25);border-color:rgba(200,0,0,0.4);color:#fff}
 
-.admin-body{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem}
+/* PAGE TABS */
+.page-tabs{background:#fff;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;padding:0 2rem;gap:0}
+.page-tab{padding:0.85rem 1.5rem;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;font-family:var(--sans);display:flex;align-items:center;gap:6px}
+.page-tab.active{color:var(--navy);border-bottom-color:var(--gold)}
+.page-tab:hover:not(.active){color:var(--navy)}
+.admin-body{max-width:1140px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-section{display:none}.page-section.active{display:block}
+.admin-grid{display:grid;grid-template-columns:360px 1fr;gap:1.5rem;align-items:start}
 
-.admin-grid{display:grid;grid-template-columns:380px 1fr;gap:2rem;align-items:start}
-
-/* ADD FORM */
-.form-card{
-  background:#fff;border-radius:10px;
-  border:1px solid rgba(0,0,0,0.07);
-  overflow:hidden;position:sticky;top:76px;
-}
-.form-card-head{
-  background:var(--navy);padding:1rem 1.5rem;
-  display:flex;align-items:center;gap:0.6rem;
-}
-.form-card-head i{color:var(--gold)}
-.form-card-head h2{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff}
-.form-body{padding:1.5rem}
-.adm-field{margin-bottom:1rem}
-.adm-field label{
-  display:block;font-size:0.68rem;font-weight:500;
-  letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:4px;
-}
-.adm-field input,.adm-field select,.adm-field textarea{
-  width:100%;padding:0.55rem 0.75rem;
-  border:1px solid rgba(0,0,0,0.15);border-radius:5px;
-  font-size:0.86rem;color:var(--text);outline:none;
-  transition:border-color 0.2s;font-family:var(--sans);
-}
+/* FORM CARD */
+.form-card{background:#fff;border-radius:10px;border:1px solid rgba(0,0,0,0.07);overflow:hidden;position:sticky;top:76px}
+.card-head{background:var(--navy);padding:0.9rem 1.4rem;display:flex;align-items:center;gap:0.6rem}
+.card-head i{color:var(--gold);font-size:0.9rem}
+.card-head h2{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:#fff;flex:1}
+.card-head-mode{font-size:0.65rem;background:rgba(200,151,58,0.2);color:var(--gold-light);padding:2px 8px;border-radius:20px;letter-spacing:0.08em;display:none}
+.card-head-mode.visible{display:block}
+.form-body{padding:1.4rem}
+.adm-field{margin-bottom:0.9rem}
+.adm-field label{display:block;font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+.adm-field label small{font-size:0.65rem;text-transform:none;letter-spacing:0;color:#999;font-weight:400}
+.adm-field input,.adm-field select,.adm-field textarea{width:100%;padding:0.52rem 0.75rem;border:1px solid rgba(0,0,0,0.14);border-radius:5px;font-size:0.85rem;color:var(--text);outline:none;transition:border-color 0.2s;font-family:var(--sans)}
 .adm-field input:focus,.adm-field select:focus,.adm-field textarea:focus{border-color:var(--gold)}
-.btn-add{
-  width:100%;padding:0.75rem;
-  background:var(--gold);color:var(--navy);
-  border:none;border-radius:5px;font-size:0.82rem;font-weight:600;
-  letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;
-  transition:background 0.2s;font-family:var(--sans);
-  display:flex;align-items:center;justify-content:center;gap:7px;
-}
+.adm-field textarea{resize:vertical;min-height:72px}
+.form-btns{display:flex;gap:0.5rem}
+.btn-add{flex:1;padding:0.72rem;background:var(--gold);color:var(--navy);border:none;border-radius:5px;font-size:0.82rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:7px}
 .btn-add:hover{background:var(--gold-light)}
-.form-msg{font-size:0.78rem;margin-top:0.6rem;min-height:1.1em;text-align:center}
-.form-msg.ok{color:var(--green)} .form-msg.err{color:var(--red)}
+.btn-cancel-edit{padding:0.72rem 1rem;background:rgba(0,0,0,0.05);color:var(--muted);border:1px solid rgba(0,0,0,0.1);border-radius:5px;font-size:0.82rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);display:none}
+.btn-cancel-edit.visible{display:block}
+.btn-cancel-edit:hover{background:rgba(0,0,0,0.1)}
+.form-msg{font-size:0.77rem;margin-top:0.55rem;min-height:1.1em;text-align:center}
+.form-msg.ok{color:var(--green)}.form-msg.err{color:var(--red)}
 
-/* NOTICES LIST */
+/* LIST CARD */
 .list-card{background:#fff;border-radius:10px;border:1px solid rgba(0,0,0,0.07);overflow:hidden}
-.list-head{
-  background:var(--navy);padding:1rem 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-}
+.list-head{background:var(--navy);padding:0.9rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
 .list-head-left{display:flex;align-items:center;gap:0.6rem}
 .list-head-left i{color:var(--gold)}
-.list-head-left h2{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff}
-.tab-btns{display:flex;gap:6px}
-.tab-btn{
-  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
-  color:rgba(255,255,255,0.6);padding:4px 12px;border-radius:20px;
-  font-size:0.72rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);
-  letter-spacing:0.06em;
-}
+.list-head-left h2{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:#fff}
+.tab-btns{display:flex;gap:5px}
+.tab-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:4px 11px;border-radius:20px;font-size:0.68rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans);letter-spacing:0.06em}
 .tab-btn.active{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:600}
-
-.notice-rows{padding:0.5rem 0;min-height:200px}
-.n-row{
-  display:flex;align-items:flex-start;gap:1rem;
-  padding:0.85rem 1.5rem;
-  border-bottom:1px solid rgba(0,0,0,0.05);
-  transition:background 0.15s;
-}
+.notice-rows{min-height:180px;max-height:520px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.notice-rows::-webkit-scrollbar{width:4px}
+.notice-rows::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+.n-row{display:flex;align-items:flex-start;gap:0.9rem;padding:0.8rem 1.4rem;border-bottom:1px solid rgba(0,0,0,0.05);transition:background 0.15s}
+.n-row.editing{background:rgba(200,151,58,0.06);border-left:3px solid var(--gold)}
 .n-row:last-child{border-bottom:none}
 .n-row:hover{background:var(--cream)}
-.n-date{font-size:0.7rem;color:var(--gold);font-weight:500;white-space:nowrap;margin-top:2px;min-width:48px}
-.n-text{font-size:0.84rem;color:var(--text);line-height:1.5;flex:1}
-.n-badge{
-  display:inline-block;font-size:0.62rem;
-  background:rgba(200,151,58,0.12);color:var(--gold);
-  padding:1px 7px;border-radius:20px;margin-left:6px;
-}
-.n-type{font-size:0.65rem;color:var(--muted);margin-top:3px;display:block}
-.btn-del{
-  background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);
-  color:var(--red);padding:4px 10px;border-radius:4px;
-  font-size:0.75rem;cursor:pointer;transition:all 0.2s;flex-shrink:0;
-  font-family:var(--sans);
-}
-.btn-del:hover{background:rgba(192,57,43,0.18);border-color:rgba(192,57,43,0.5)}
-.empty-msg{padding:2.5rem;text-align:center;font-size:0.84rem;color:var(--muted)}
-.loading-msg{padding:2.5rem;text-align:center;font-size:0.84rem;color:var(--muted)}
+.n-row.editing:hover{background:rgba(200,151,58,0.06)}
+.n-date{font-size:0.68rem;color:var(--gold);font-weight:500;white-space:nowrap;margin-top:2px;min-width:46px}
+.n-text{font-size:0.83rem;color:var(--text);line-height:1.5;flex:1}
+.n-badge{display:inline-block;font-size:0.6rem;background:rgba(200,151,58,0.12);color:var(--gold);padding:1px 7px;border-radius:20px;margin-left:5px}
+.n-type{font-size:0.63rem;color:var(--muted);margin-top:2px;display:block}
+.row-actions{display:flex;gap:5px;flex-shrink:0}
+.btn-edit{background:rgba(59,100,200,0.08);border:1px solid rgba(59,100,200,0.2);color:#3b64c8;padding:4px 9px;border-radius:4px;font-size:0.72rem;cursor:pointer;transition:all 0.2s;font-family:var(--sans)}
+.btn-edit:hover{background:rgba(59,100,200,0.18);border-color:rgba(59,100,200,0.4)}
+.btn-del{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);color:var(--red);padding:4px 9px;border-radius:4px;font-size:0.72rem;cursor:pointer;transition:all 0.2s;flex-shrink:0;font-family:var(--sans)}
+.btn-del:hover{background:rgba(192,57,43,0.18);border-color:rgba(192,57,43,0.4)}
+.empty-msg,.loading-msg{padding:2.5rem;text-align:center;font-size:0.83rem;color:var(--muted)}
 
-@media(max-width:800px){
-  .admin-grid{grid-template-columns:1fr}
-  .form-card{position:static}
-}
+/* ANNOUNCEMENTS */
+.ticker-preview{background:var(--gold);padding:0.5rem 0;overflow:hidden;border-radius:6px;margin-bottom:1.5rem}
+.ticker-preview-inner{display:flex;align-items:center;overflow:hidden}
+.ticker-preview-label{background:var(--navy);color:var(--gold);padding:0.15rem 1rem;font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;white-space:nowrap;z-index:1}
+.ticker-preview-track{display:flex;gap:2.5rem;animation:tickPrev 38s linear infinite;white-space:nowrap;padding:0 1rem}
+@keyframes tickPrev{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-preview-item{font-size:0.78rem;font-weight:500;color:var(--navy)}
+.ticker-preview-item::before{content:'◆';font-size:0.45rem;margin-right:0.5rem;vertical-align:middle}
+.ticker-list-wrap{background:#fff;border-radius:10px;border:1px solid rgba(0,0,0,0.07);overflow:hidden}
+.ticker-rows{min-height:120px;max-height:400px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.ticker-rows::-webkit-scrollbar{width:4px}
+.ticker-rows::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+.t-row{display:flex;align-items:center;gap:0.9rem;padding:0.75rem 1.4rem;border-bottom:1px solid rgba(0,0,0,0.05);transition:background 0.15s}
+.t-row.editing{background:rgba(200,151,58,0.06);border-left:3px solid var(--gold)}
+.t-row:last-child{border-bottom:none}
+.t-row:hover{background:var(--cream)}
+.t-row.editing:hover{background:rgba(200,151,58,0.06)}
+.t-type-badge{font-size:0.6rem;padding:2px 8px;border-radius:20px;font-weight:500;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0}
+.tb-text{background:rgba(90,90,114,0.1);color:var(--muted)}
+.tb-link{background:rgba(59,100,200,0.1);color:#3b64c8}
+.tb-download{background:rgba(26,122,74,0.1);color:#1a7a4a}
+.t-text{font-size:0.83rem;color:var(--text);flex:1;line-height:1.4}
+.t-href{font-size:0.65rem;color:var(--muted);display:block;margin-top:2px}
+.ann-grid{display:grid;grid-template-columns:360px 1fr;gap:1.5rem;align-items:start}
+
+@media(max-width:860px){.admin-grid,.ann-grid{grid-template-columns:1fr}.form-card{position:static}}
+@media(max-width:500px){.page-tab{padding:0.75rem 0.9rem;font-size:0.7rem}.admin-nav{padding:0 1rem}}
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN SCREEN ══ -->
+<!-- ══ PAGE LOADER (scales animation, inline, no fetch) ══ -->
+<div id="page-loader">
+  <div class="lw-corner tl"></div><div class="lw-corner tr"></div>
+  <div class="lw-corner bl"></div><div class="lw-corner br"></div>
+  <div class="lw-icon">
+    <svg class="lw-svg-ring" viewBox="0 0 120 120">
+      <circle class="lw-track" cx="60" cy="60" r="50" fill="none" stroke-width="1.2"/>
+      <circle class="lw-arc"   cx="60" cy="60" r="50" fill="none" stroke-width="1.2"/>
+    </svg>
+    <svg class="lw-scale" viewBox="0 0 64 64" id="scaleSvg">
+      <line x1="32" y1="20" x2="32" y2="52" stroke="#c8973a" stroke-width="1.3"/>
+      <line x1="22" y1="52" x2="42" y2="52" stroke="#c8973a" stroke-width="1.3"/>
+      <circle cx="32" cy="18" r="2" fill="none" stroke="#c8973a" stroke-width="1"/>
+      <line id="beam" x1="10" y1="18" x2="54" y2="18" stroke="#c8973a" stroke-width="1.1"/>
+      <line id="lChain" x1="10" y1="18" x2="10" y2="30" stroke="#c8973a" stroke-width="0.9"/>
+      <path id="lPan" d="M6 30 Q10 35 14 30Z" stroke="#c8973a" stroke-width="0.9" fill="rgba(200,151,58,0.15)"/>
+      <line id="rChain" x1="54" y1="18" x2="54" y2="30" stroke="#c8973a" stroke-width="0.9"/>
+      <path id="rPan" d="M50 30 Q54 35 58 30Z" stroke="#c8973a" stroke-width="0.9" fill="rgba(200,151,58,0.15)"/>
+    </svg>
+    <div class="lw-shimmer"></div>
+    <div class="lw-label"><span>Loading</span>
+      <div class="lw-dots"><div class="lw-dot"></div><div class="lw-dot"></div><div class="lw-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ API LOADER SPINNER (shown during fetch calls) ══ -->
+<div id="api-loader">
+  <div class="lw-icon" style="transform:scale(0.8)">
+    <svg class="lw-svg-ring" viewBox="0 0 120 120">
+      <circle class="lw-track" cx="60" cy="60" r="50" fill="none" stroke-width="1.2"/>
+      <circle class="lw-arc"   cx="60" cy="60" r="50" fill="none" stroke-width="1.2"/>
+    </svg>
+    <svg class="lw-scale" viewBox="0 0 64 64" id="scaleSvg2">
+      <line x1="32" y1="20" x2="32" y2="52" stroke="#c8973a" stroke-width="1.3"/>
+      <line x1="22" y1="52" x2="42" y2="52" stroke="#c8973a" stroke-width="1.3"/>
+      <circle cx="32" cy="18" r="2" fill="none" stroke="#c8973a" stroke-width="1"/>
+      <line id="beam2" x1="10" y1="18" x2="54" y2="18" stroke="#c8973a" stroke-width="1.1"/>
+      <line id="lChain2" x1="10" y1="18" x2="10" y2="30" stroke="#c8973a" stroke-width="0.9"/>
+      <path id="lPan2" d="M6 30 Q10 35 14 30Z" stroke="#c8973a" stroke-width="0.9" fill="rgba(200,151,58,0.15)"/>
+      <line id="rChain2" x1="54" y1="18" x2="54" y2="30" stroke="#c8973a" stroke-width="0.9"/>
+      <path id="rPan2" d="M50 30 Q54 35 58 30Z" stroke="#c8973a" stroke-width="0.9" fill="rgba(200,151,58,0.15)"/>
+    </svg>
+    <div class="lw-shimmer"></div>
+    <div class="lw-label"><span id="api-loader-text">Saving…</span>
+      <div class="lw-dots"><div class="lw-dot"></div><div class="lw-dot"></div><div class="lw-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
@@ -194,306 +238,606 @@ body{font-family:var(--sans);background:#0b1929;min-height:100vh;color:var(--tex
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" id="inp-pass" autocomplete="current-password" placeholder="Enter password"/>
+      <div class="pw-wrap">
+        <input type="password" id="inp-pass" autocomplete="current-password" placeholder="Enter password"/>
+        <button class="pw-toggle" id="pw-toggle" type="button"><i class="fas fa-eye" id="pw-icon"></i></button>
+      </div>
     </div>
     <button class="btn-login" id="btn-login">
-      <i class="fas fa-sign-in-alt"></i> Login
+      <i class="fas fa-sign-in-alt"></i><span id="btn-login-text">Login</span>
     </button>
     <div class="login-err" id="login-err"></div>
     <div class="login-note">This page is for authorised staff only.</div>
   </div>
 </div>
 
-<!-- ══ ADMIN PANEL (shown after login) ══ -->
+<!-- ══ ADMIN PANEL ══ -->
 <div id="admin-panel">
-
   <nav class="admin-nav">
-    <div class="admin-nav-brand">
-      <i class="fas fa-balance-scale"></i>
-      RGIL · Notice Board Admin
-    </div>
+    <div class="admin-nav-brand"><i class="fas fa-balance-scale"></i>RGIL · Admin Panel</div>
     <div class="admin-nav-right">
       <span class="admin-user" id="admin-username"></span>
-      <button class="btn-logout" id="btn-logout">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
+      <button class="btn-logout" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </nav>
-
+  <div class="page-tabs">
+    <button class="page-tab active" data-section="notices-section"><i class="fas fa-bullhorn"></i> Notices &amp; Events</button>
+    <button class="page-tab" data-section="announce-section"><i class="fas fa-scroll"></i> Announcements Ticker</button>
+  </div>
   <div class="admin-body">
-    <div class="admin-grid">
 
-      <!-- ── ADD NOTICE FORM ── -->
-      <div class="form-card">
-        <div class="form-card-head">
-          <i class="fas fa-plus-circle"></i>
-          <h2>Add Notice</h2>
-        </div>
-        <div class="form-body">
-
-          <div class="adm-field">
-            <label>Panel</label>
-            <select id="adm-panel">
-              <option value="notices">Notices &amp; Circulars</option>
-              <option value="events">Events &amp; Activities</option>
-            </select>
+    <!-- SECTION 1: NOTICES -->
+    <div class="page-section active" id="notices-section">
+      <div class="admin-grid">
+        <div class="form-card" id="notice-form-card">
+          <div class="card-head">
+            <i class="fas fa-plus-circle" id="notice-form-icon"></i>
+            <h2 id="notice-form-title">Add Notice / Event</h2>
+            <span class="card-head-mode" id="notice-edit-badge">EDITING</span>
           </div>
-
-          <div class="adm-field">
-            <label>Display Date <small style="text-transform:none;letter-spacing:0;color:#888">(e.g. May 15)</small></label>
-            <input type="text" id="adm-date" placeholder="May 15"/>
-          </div>
-
-          <div class="adm-field">
-            <label>Notice Text</label>
-            <input type="text" id="adm-text" placeholder="Enter notice or event text…"/>
-          </div>
-
-          <div class="adm-field">
-            <label>Type</label>
-            <select id="adm-type">
-              <option value="text">Text only</option>
-              <option value="link">Link (go to page)</option>
-              <option value="download">Download (PDF / file)</option>
-            </select>
-          </div>
-
-          <div class="adm-field" id="adm-href-row" style="display:none">
-            <label>URL or File path</label>
-            <input type="text" id="adm-href" placeholder="e.g. notices.html or assets/result.pdf"/>
-          </div>
-
-          <div class="adm-field">
-            <label>Badge <small style="text-transform:none;letter-spacing:0;color:#888">(optional)</small></label>
-            <select id="adm-badge">
-              <option value="">None</option>
-              <option value="New">New</option>
-              <option value="Ongoing">Ongoing</option>
-            </select>
-          </div>
-
-          <button class="btn-add" id="btn-add">
-            <i class="fas fa-plus"></i> Add Notice
-          </button>
-          <div class="form-msg" id="form-msg"></div>
-
-        </div>
-      </div>
-
-      <!-- ── NOTICES LIST ── -->
-      <div class="list-card">
-        <div class="list-head">
-          <div class="list-head-left">
-            <i class="fas fa-list"></i>
-            <h2>All Notices</h2>
-          </div>
-          <div class="tab-btns">
-            <button class="tab-btn active" data-panel="notices">Notices</button>
-            <button class="tab-btn" data-panel="events">Events</button>
+          <div class="form-body">
+            <div class="adm-field">
+              <label>Panel</label>
+              <select id="adm-panel">
+                <option value="notices">Notices &amp; Circulars</option>
+                <option value="events">Events &amp; Activities</option>
+              </select>
+            </div>
+            <div class="adm-field">
+              <label>Display Date <small>(e.g. May 15)</small></label>
+              <input type="text" id="adm-date" placeholder="May 15"/>
+            </div>
+            <div class="adm-field">
+              <label>Notice Text</label>
+              <textarea id="adm-text" placeholder="Enter notice or event text…"></textarea>
+            </div>
+            <div class="adm-field">
+              <label>Type</label>
+              <select id="adm-type">
+                <option value="text">Text only</option>
+                <option value="link">Link (go to page)</option>
+                <option value="download">Download (PDF / file)</option>
+              </select>
+            </div>
+            <div class="adm-field" id="adm-href-row" style="display:none">
+              <label>URL or File path</label>
+              <input type="text" id="adm-href" placeholder="e.g. notices.html or assets/result.pdf"/>
+            </div>
+            <div class="adm-field">
+              <label>Badge <small>(optional)</small></label>
+              <select id="adm-badge">
+                <option value="">None</option>
+                <option value="New">New</option>
+                <option value="Ongoing">Ongoing</option>
+              </select>
+            </div>
+            <div class="form-btns">
+              <button class="btn-add" id="btn-add-notice"><i class="fas fa-plus" id="notice-btn-icon"></i><span id="notice-btn-text">Add Notice</span></button>
+              <button class="btn-cancel-edit" id="btn-cancel-notice">Cancel</button>
+            </div>
+            <div class="form-msg" id="notice-msg"></div>
           </div>
         </div>
-        <div class="notice-rows" id="notice-rows">
-          <div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+        <div class="list-card">
+          <div class="list-head">
+            <div class="list-head-left"><i class="fas fa-list"></i><h2>All Notices</h2></div>
+            <div class="tab-btns">
+              <button class="tab-btn active" data-panel="notices">Notices</button>
+              <button class="tab-btn" data-panel="events">Events</button>
+            </div>
+          </div>
+          <div class="notice-rows" id="notice-rows">
+            <div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+          </div>
         </div>
       </div>
-
     </div>
+
+    <!-- SECTION 2: ANNOUNCEMENTS -->
+    <div class="page-section" id="announce-section">
+      <div class="ticker-preview" id="ticker-preview-wrap">
+        <div class="ticker-preview-inner">
+          <div class="ticker-preview-label">📢 Live Preview</div>
+          <div class="ticker-preview-track" id="ticker-preview"></div>
+        </div>
+      </div>
+      <div class="ann-grid">
+        <div class="form-card" id="ann-form-card">
+          <div class="card-head">
+            <i class="fas fa-plus-circle" id="ann-form-icon"></i>
+            <h2 id="ann-form-title">Add Announcement</h2>
+            <span class="card-head-mode" id="ann-edit-badge">EDITING</span>
+          </div>
+          <div class="form-body">
+            <div class="adm-field">
+              <label>Announcement Text</label>
+              <textarea id="ann-text" placeholder="e.g. Admissions Open for 2025–26 Academic Year"></textarea>
+            </div>
+            <div class="adm-field">
+              <label>Type</label>
+              <select id="ann-type">
+                <option value="text">Text only</option>
+                <option value="link">Link (go to page)</option>
+                <option value="download">Download (PDF / file)</option>
+              </select>
+            </div>
+            <div class="adm-field" id="ann-href-row" style="display:none">
+              <label>URL or File path</label>
+              <input type="text" id="ann-href" placeholder="e.g. admissions.html or assets/brochure.pdf"/>
+            </div>
+            <div class="form-btns">
+              <button class="btn-add" id="btn-add-ann"><i class="fas fa-plus" id="ann-btn-icon"></i><span id="ann-btn-text">Add to Ticker</span></button>
+              <button class="btn-cancel-edit" id="btn-cancel-ann">Cancel</button>
+            </div>
+            <div class="form-msg" id="ann-msg"></div>
+          </div>
+        </div>
+        <div class="ticker-list-wrap">
+          <div class="list-head">
+            <div class="list-head-left"><i class="fas fa-scroll"></i><h2>Ticker Items</h2></div>
+            <span style="font-size:0.68rem;color:rgba(255,255,255,0.4)">Showing live order</span>
+          </div>
+          <div class="ticker-rows" id="ticker-rows">
+            <div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════════
-   RGIL Admin Panel Script
-   - Login → stores JWT in memory (not localStorage)
-   - All API calls use Authorization: Bearer <token>
-   - Token never touches localStorage / visible to users
-══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   SCALES ANIMATION (runs for both loaders)
+══════════════════════════════════════════════════ */
+(function scalesAnim(){
+  const DEG=Math.PI/180,PAN=12,LX=10,RX=54,PY=18,AMP=10,PER=2000;
+  function frame(t){
+    const ph=(t%PER)/PER*2*Math.PI,rad=AMP*Math.sin(ph)*DEG;
+    const c=Math.cos(rad),s=Math.sin(rad);
+    const lx=32+(LX-32)*c,ly=PY+(LX-32)*s,rx=32+(RX-32)*c,ry=PY+(RX-32)*s,PW=4;
+    const set=(id,a)=>{const el=document.getElementById(id);if(!el)return;for(const[k,v]of Object.entries(a))el.setAttribute(k,v)};
+    // loader 1
+    set('beam',{x1:lx,y1:ly,x2:rx,y2:ry});
+    set('lChain',{x1:lx,y1:ly,x2:lx,y2:ly+PAN});
+    set('rChain',{x1:rx,y1:ry,x2:rx,y2:ry+PAN});
+    set('lPan',{d:`M${lx-PW} ${ly+PAN} Q${lx} ${ly+PAN+5} ${lx+PW} ${ly+PAN}Z`});
+    set('rPan',{d:`M${rx-PW} ${ry+PAN} Q${rx} ${ry+PAN+5} ${rx+PW} ${ry+PAN}Z`});
+    // loader 2 (api spinner)
+    set('beam2',{x1:lx,y1:ly,x2:rx,y2:ry});
+    set('lChain2',{x1:lx,y1:ly,x2:lx,y2:ly+PAN});
+    set('rChain2',{x1:rx,y1:ry,x2:rx,y2:ry+PAN});
+    set('lPan2',{d:`M${lx-PW} ${ly+PAN} Q${lx} ${ly+PAN+5} ${lx+PW} ${ly+PAN}Z`});
+    set('rPan2',{d:`M${rx-PW} ${ry+PAN} Q${rx} ${ry+PAN+5} ${rx+PW} ${ry+PAN}Z`});
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 
-// 🔧 Change this to your server URL when deploying
-const API = 'http://localhost:5000/api';
+/* Hide PAGE loader on load */
+window.addEventListener('load',()=>{
+  const l=document.getElementById('page-loader');
+  if(!l)return;
+  l.style.opacity='0';
+  setTimeout(()=>l.remove(),500);
+});
+setTimeout(()=>{const l=document.getElementById('page-loader');if(l)l.remove();},4000);
 
-/* Token stored only in memory — disappears on tab close */
-let TOKEN = null;
-let currentPanel = 'notices';
-let allNotices   = [];
+/* API loader helpers */
+function showLoader(msg='Saving…'){
+  document.getElementById('api-loader-text').textContent=msg;
+  document.getElementById('api-loader').classList.add('show');
+}
+function hideLoader(){ document.getElementById('api-loader').classList.remove('show'); }
 
-/* ── DOM refs ── */
-const loginScreen  = document.getElementById('login-screen');
-const adminPanel   = document.getElementById('admin-panel');
-const loginErr     = document.getElementById('login-err');
-const adminUser    = document.getElementById('admin-username');
-const noticeRows   = document.getElementById('notice-rows');
-const formMsg      = document.getElementById('form-msg');
+/* ══════════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════════ */
+const API='http://localhost:5000/api'; // 🔧 change to your server URL
 
-/* ── LOGIN ── */
-document.getElementById('btn-login').addEventListener('click', doLogin);
-document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+/* ══ STATE ══ */
+let TOKEN=null,currentPanel='notices',allNotices=[],allTicker=[];
+let editingNoticeId=null,editingTickerId=null;
 
-async function doLogin() {
-  const username = document.getElementById('inp-user').value.trim();
-  const password = document.getElementById('inp-pass').value;
-  loginErr.textContent = '';
+/* ══ DOM ══ */
+const loginScreen=document.getElementById('login-screen');
+const adminPanel=document.getElementById('admin-panel');
+const loginErr=document.getElementById('login-err');
+const noticeRows=document.getElementById('notice-rows');
+const tickerRows=document.getElementById('ticker-rows');
 
-  if (!username || !password) { loginErr.textContent = 'Enter username and password.'; return; }
-
-  try {
-    const res  = await fetch(`${API}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
-    if (!res.ok) { loginErr.textContent = data.error || 'Login failed.'; return; }
-
-    TOKEN = data.token;
-    adminUser.textContent = `Logged in as: ${username}`;
-    loginScreen.style.display  = 'none';
-    adminPanel.style.display   = 'block';
-    document.getElementById('inp-pass').value = ''; // clear password field
+/* ══════════════════════════════════════════════════
+   FIX 1: SESSION PERSISTENCE
+   Store token in sessionStorage — survives refresh but
+   clears when browser tab/window is fully closed.
+══════════════════════════════════════════════════ */
+function saveSession(token,username){
+  sessionStorage.setItem('rgil_token',token);
+  sessionStorage.setItem('rgil_user',username);
+}
+function clearSession(){
+  sessionStorage.removeItem('rgil_token');
+  sessionStorage.removeItem('rgil_user');
+}
+async function restoreSession(){
+  const token=sessionStorage.getItem('rgil_token');
+  const username=sessionStorage.getItem('rgil_user');
+  if(!token||!username) return false;
+  /* Verify token is still valid */
+  try{
+    const res=await fetch(`${API}/auth/verify`,{headers:{'Authorization':`Bearer ${token}`}});
+    if(!res.ok){ clearSession(); return false; }
+    TOKEN=token;
+    document.getElementById('admin-username').textContent=`Logged in as: ${username}`;
+    loginScreen.style.display='none';
+    adminPanel.style.display='block';
     fetchNotices();
-  } catch (err) {
-    loginErr.textContent = 'Cannot connect to server. Is the backend running?';
+    fetchTicker();
+    return true;
+  }catch{ clearSession(); return false; }
+}
+
+/* Try restoring session on page load */
+window.addEventListener('DOMContentLoaded',()=>{ restoreSession(); });
+
+/* ══════════════════════════════════════════════════
+   PASSWORD TOGGLE
+══════════════════════════════════════════════════ */
+document.getElementById('pw-toggle').addEventListener('click',function(){
+  const inp=document.getElementById('inp-pass'),icon=document.getElementById('pw-icon');
+  const show=inp.type==='password';
+  inp.type=show?'text':'password';
+  icon.className=show?'fas fa-eye-slash':'fas fa-eye';
+  inp.focus();
+});
+
+/* ══════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════ */
+document.getElementById('btn-login').addEventListener('click',doLogin);
+document.getElementById('inp-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('inp-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inp-pass').focus()});
+
+async function doLogin(){
+  const username=document.getElementById('inp-user').value.trim();
+  const password=document.getElementById('inp-pass').value;
+  loginErr.textContent='';
+  if(!username||!password){loginErr.textContent='Enter username and password.';return}
+  const btn=document.getElementById('btn-login');
+  btn.classList.add('loading');
+  document.getElementById('btn-login-text').textContent='Logging in…';
+  try{
+    const res=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+    const data=await res.json();
+    if(!res.ok){loginErr.textContent=data.error||'Login failed.';btn.classList.remove('loading');document.getElementById('btn-login-text').textContent='Login';return}
+    TOKEN=data.token;
+    saveSession(TOKEN,username); /* ← FIX 1: persist session */
+    document.getElementById('admin-username').textContent=`Logged in as: ${username}`;
+    loginScreen.style.display='none';
+    adminPanel.style.display='block';
+    document.getElementById('inp-pass').value='';
+    document.getElementById('inp-pass').type='password';
+    document.getElementById('pw-icon').className='fas fa-eye';
+    fetchNotices();
+    fetchTicker();
+  }catch{
+    loginErr.textContent='Cannot connect to server. Is the backend running?';
+    btn.classList.remove('loading');
+    document.getElementById('btn-login-text').textContent='Login';
   }
 }
 
-/* ── LOGOUT ── */
-document.getElementById('btn-logout').addEventListener('click', () => {
-  TOKEN = null;
-  allNotices = [];
-  loginScreen.style.display  = 'flex';
-  adminPanel.style.display   = 'none';
-  document.getElementById('inp-user').value = '';
-  loginErr.textContent = '';
+/* LOGOUT */
+document.getElementById('btn-logout').addEventListener('click',()=>{
+  TOKEN=null;allNotices=[];allTicker=[];
+  clearSession(); /* ← FIX 1: clear session */
+  loginScreen.style.display='flex';
+  adminPanel.style.display='none';
+  document.getElementById('inp-user').value='';
+  document.getElementById('inp-pass').value='';
+  loginErr.textContent='';
+  document.getElementById('btn-login').classList.remove('loading');
+  document.getElementById('btn-login-text').textContent='Login';
+  cancelNoticeEdit();cancelAnnEdit();
 });
 
-/* ── TABS ── */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+/* ══════════════════════════════════════════════════
+   PAGE TABS
+══════════════════════════════════════════════════ */
+document.querySelectorAll('.page-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.page-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.section).classList.add('active');
+    if(tab.dataset.section==='announce-section')renderTickerPreview();
+  });
+});
+
+/* NOTICE PANEL TABS */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    currentPanel = btn.dataset.panel;
+    currentPanel=btn.dataset.panel;
+    cancelNoticeEdit();
     renderRows();
   });
 });
 
-/* ── FETCH all notices ── */
-async function fetchNotices() {
-  noticeRows.innerHTML = '<div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>';
-  try {
-    const res  = await fetch(`${API}/notices`, {
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
-    });
-    allNotices = await res.json();
+/* ══════════════════════════════════════════════════
+   NOTICES — FETCH, RENDER, ADD, EDIT, DELETE
+══════════════════════════════════════════════════ */
+async function fetchNotices(){
+  noticeRows.innerHTML='<div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>';
+  try{
+    const res=await fetch(`${API}/notices`,{headers:{'Authorization':`Bearer ${TOKEN}`}});
+    allNotices=await res.json();
     renderRows();
-  } catch {
-    noticeRows.innerHTML = '<div class="loading-msg" style="color:#c0392b">Failed to load notices.</div>';
-  }
+  }catch{ noticeRows.innerHTML='<div class="loading-msg" style="color:#c0392b">Failed to load notices.</div>'; }
 }
 
-/* ── RENDER rows for current tab ── */
-function renderRows() {
-  const filtered = allNotices.filter(n => n.panel === currentPanel);
-  if (!filtered.length) {
-    noticeRows.innerHTML = '<div class="empty-msg">No entries yet.</div>';
-    return;
-  }
-  noticeRows.innerHTML = '';
-  filtered.forEach(n => {
-    const row = document.createElement('div');
-    row.className = 'n-row';
-    row.innerHTML = `
-      <div class="n-date">${escHtml(n.date)}</div>
+function renderRows(){
+  const filtered=allNotices.filter(n=>n.panel===currentPanel);
+  if(!filtered.length){noticeRows.innerHTML='<div class="empty-msg">No entries yet.</div>';return}
+  noticeRows.innerHTML='';
+  filtered.forEach(n=>{
+    const row=document.createElement('div');
+    row.className='n-row'+(editingNoticeId===n._id?' editing':'');
+    row.dataset.id=n._id;
+    row.innerHTML=`
+      <div class="n-date">${esc(n.date)}</div>
       <div class="n-text">
-        ${escHtml(n.text)}
-        ${n.badge ? `<span class="n-badge">${escHtml(n.badge)}</span>` : ''}
+        ${esc(n.text)}
+        ${n.badge?`<span class="n-badge">${esc(n.badge)}</span>`:''}
         <span class="n-type">${typeLabel(n)}</span>
       </div>
-      <button class="btn-del" data-id="${n._id}">
-        <i class="fas fa-trash"></i> Delete
-      </button>
-    `;
-    row.querySelector('.btn-del').addEventListener('click', () => deleteNotice(n._id, n.text));
+      <div class="row-actions">
+        <button class="btn-edit"><i class="fas fa-pen"></i> Edit</button>
+        <button class="btn-del"><i class="fas fa-trash"></i> Del</button>
+      </div>`;
+    row.querySelector('.btn-edit').addEventListener('click',()=>startEditNotice(n));
+    row.querySelector('.btn-del').addEventListener('click',()=>deleteNotice(n._id,n.text));
     noticeRows.appendChild(row);
   });
 }
 
-function typeLabel(n) {
-  if (n.type === 'link')     return `↗ Links to: ${n.href}`;
-  if (n.type === 'download') return `⬇ Downloads: ${n.href}`;
-  return 'Text only';
+/* ── FIX 2: EDIT NOTICE ── */
+function startEditNotice(n){
+  editingNoticeId=n._id;
+  /* Fill form */
+  document.getElementById('adm-panel').value=n.panel;
+  document.getElementById('adm-date').value=n.date;
+  document.getElementById('adm-text').value=n.text;
+  document.getElementById('adm-type').value=n.type;
+  document.getElementById('adm-href').value=n.href||'';
+  document.getElementById('adm-badge').value=n.badge||'';
+  document.getElementById('adm-href-row').style.display=n.type==='text'?'none':'block';
+  /* Update form UI */
+  document.getElementById('notice-form-title').textContent='Edit Notice / Event';
+  document.getElementById('notice-form-icon').className='fas fa-pen';
+  document.getElementById('notice-edit-badge').classList.add('visible');
+  document.getElementById('notice-btn-icon').className='fas fa-save';
+  document.getElementById('notice-btn-text').textContent='Save Changes';
+  document.getElementById('btn-cancel-notice').classList.add('visible');
+  /* Scroll form into view & highlight row */
+  document.getElementById('notice-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  renderRows();
 }
 
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function cancelNoticeEdit(){
+  editingNoticeId=null;
+  document.getElementById('adm-date').value='';
+  document.getElementById('adm-text').value='';
+  document.getElementById('adm-href').value='';
+  document.getElementById('adm-badge').value='';
+  document.getElementById('adm-type').value='text';
+  document.getElementById('adm-href-row').style.display='none';
+  document.getElementById('notice-form-title').textContent='Add Notice / Event';
+  document.getElementById('notice-form-icon').className='fas fa-plus-circle';
+  document.getElementById('notice-edit-badge').classList.remove('visible');
+  document.getElementById('notice-btn-icon').className='fas fa-plus';
+  document.getElementById('notice-btn-text').textContent='Add Notice';
+  document.getElementById('btn-cancel-notice').classList.remove('visible');
+  noticeMsg('','');
+  renderRows();
 }
 
-/* ── DELETE ── */
-async function deleteNotice(id, text) {
-  if (!confirm(`Delete this notice?\n\n"${text}"`)) return;
-  try {
-    const res = await fetch(`${API}/notices/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
-    });
-    if (!res.ok) { alert('Delete failed.'); return; }
-    allNotices = allNotices.filter(n => n._id !== id);
-    renderRows();
-  } catch {
-    alert('Error connecting to server.');
-  }
-}
-
-/* ── SHOW/HIDE href field ── */
-document.getElementById('adm-type').addEventListener('change', function() {
-  document.getElementById('adm-href-row').style.display = this.value === 'text' ? 'none' : 'block';
+document.getElementById('btn-cancel-notice').addEventListener('click',cancelNoticeEdit);
+document.getElementById('adm-type').addEventListener('change',function(){
+  document.getElementById('adm-href-row').style.display=this.value==='text'?'none':'block';
 });
+document.getElementById('btn-add-notice').addEventListener('click',saveNotice);
 
-/* ── ADD NOTICE ── */
-document.getElementById('btn-add').addEventListener('click', addNotice);
+async function saveNotice(){
+  const panel=document.getElementById('adm-panel').value;
+  const date=document.getElementById('adm-date').value.trim();
+  const text=document.getElementById('adm-text').value.trim();
+  const type=document.getElementById('adm-type').value;
+  const href=document.getElementById('adm-href').value.trim();
+  const badge=document.getElementById('adm-badge').value;
+  noticeMsg('','');
+  if(!date||!text){noticeMsg('Date and text are required.','err');return}
+  if(type!=='text'&&!href){noticeMsg('Enter a URL or file path.','err');return}
 
-async function addNotice() {
-  const panel = document.getElementById('adm-panel').value;
-  const date  = document.getElementById('adm-date').value.trim();
-  const text  = document.getElementById('adm-text').value.trim();
-  const type  = document.getElementById('adm-type').value;
-  const href  = document.getElementById('adm-href').value.trim();
-  const badge = document.getElementById('adm-badge').value;
+  const isEdit=!!editingNoticeId;
+  showLoader(isEdit?'Updating…':'Saving…');
+  try{
+    const url=isEdit?`${API}/notices/${editingNoticeId}`:`${API}/notices`;
+    const method=isEdit?'PATCH':'POST';
+    const res=await fetch(url,{method,headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},body:JSON.stringify({panel,date,text,type,href,badge})});
+    const data=await res.json();
+    hideLoader();
+    if(!res.ok){noticeMsg(data.error||'Failed.','err');return}
+    if(isEdit){
+      allNotices=allNotices.map(n=>n._id===editingNoticeId?data:n);
+      cancelNoticeEdit();
+      noticeMsg('✓ Notice updated!','ok');
+    }else{
+      allNotices.unshift(data);
+      document.getElementById('adm-date').value='';
+      document.getElementById('adm-text').value='';
+      document.getElementById('adm-href').value='';
+      document.getElementById('adm-badge').value='';
+      noticeMsg('✓ Notice added!','ok');
+      renderRows();
+    }
+    setTimeout(()=>noticeMsg('',''),3000);
+  }catch{hideLoader();noticeMsg('Server error. Is the backend running?','err');}
+}
 
-  showMsg('', '');
+async function deleteNotice(id,text){
+  if(!confirm(`Delete this notice?\n\n"${text}"`))return;
+  showLoader('Deleting…');
+  try{
+    const res=await fetch(`${API}/notices/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${TOKEN}`}});
+    hideLoader();
+    if(!res.ok){alert('Delete failed.');return}
+    allNotices=allNotices.filter(n=>n._id!==id);
+    if(editingNoticeId===id)cancelNoticeEdit();
+    else renderRows();
+  }catch{hideLoader();alert('Error connecting to server.');}
+}
 
-  if (!date || !text) { showMsg('Date and text are required.', 'err'); return; }
-  if (type !== 'text' && !href) { showMsg('Enter a URL or file path.', 'err'); return; }
+function typeLabel(n){
+  if(n.type==='link')return`↗ ${n.href}`;
+  if(n.type==='download')return`⬇ ${n.href}`;
+  return'Text only';
+}
+function noticeMsg(t,type){const el=document.getElementById('notice-msg');el.textContent=t;el.className=`form-msg ${type}`}
 
-  try {
-    const res  = await fetch(`${API}/notices`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${TOKEN}`
-      },
-      body: JSON.stringify({ panel, date, text, type, href, badge })
-    });
-    const data = await res.json();
-    if (!res.ok) { showMsg(data.error || 'Failed to add.', 'err'); return; }
-
-    allNotices.unshift(data);
-    renderRows();
-    /* Clear form */
-    document.getElementById('adm-date').value  = '';
-    document.getElementById('adm-text').value  = '';
-    document.getElementById('adm-href').value  = '';
-    document.getElementById('adm-badge').value = '';
-    showMsg('✓ Notice added!', 'ok');
-    setTimeout(() => showMsg('', ''), 3000);
-  } catch {
-    showMsg('Server error. Is the backend running?', 'err');
+/* ══════════════════════════════════════════════════
+   TICKER — FETCH, RENDER, ADD, EDIT, DELETE
+══════════════════════════════════════════════════ */
+async function fetchTicker(){
+  tickerRows.innerHTML='<div class="loading-msg"><i class="fas fa-circle-notch fa-spin"></i> Loading…</div>';
+  try{
+    const res=await fetch(`${API}/ticker`,{headers:{'Authorization':`Bearer ${TOKEN}`}});
+    allTicker=await res.json();
+    renderTickerRows();
+    renderTickerPreview();
+  }catch{
+    tickerRows.innerHTML='<div class="empty-msg">No ticker items yet.<br><small style="color:#aaa">Make sure /api/ticker route exists in server.js.</small></div>';
   }
 }
 
-function showMsg(text, type) {
-  formMsg.textContent = text;
-  formMsg.className   = `form-msg ${type}`;
+function renderTickerRows(){
+  if(!allTicker.length){tickerRows.innerHTML='<div class="empty-msg">No ticker items yet.</div>';return}
+  tickerRows.innerHTML='';
+  allTicker.forEach(item=>{
+    const bc=item.type==='link'?'tb-link':item.type==='download'?'tb-download':'tb-text';
+    const row=document.createElement('div');
+    row.className='t-row'+(editingTickerId===item._id?' editing':'');
+    row.dataset.id=item._id;
+    row.innerHTML=`
+      <span class="t-type-badge ${bc}">${item.type}</span>
+      <div class="t-text">${esc(item.text)}${item.href?`<span class="t-href">${esc(item.href)}</span>`:''}</div>
+      <div class="row-actions">
+        <button class="btn-edit"><i class="fas fa-pen"></i> Edit</button>
+        <button class="btn-del"><i class="fas fa-trash"></i></button>
+      </div>`;
+    row.querySelector('.btn-edit').addEventListener('click',()=>startEditAnn(item));
+    row.querySelector('.btn-del').addEventListener('click',()=>deleteTicker(item._id,item.text));
+    tickerRows.appendChild(row);
+  });
 }
+
+function renderTickerPreview(){
+  const track=document.getElementById('ticker-preview');
+  if(!allTicker.length){track.innerHTML='<span style="color:var(--navy);font-size:0.78rem;font-weight:500;padding:0 1rem">No announcements yet</span>';return}
+  const items=[...allTicker,...allTicker];
+  track.innerHTML=items.map(i=>`<span class="ticker-preview-item">${esc(i.text)}</span>`).join('');
+}
+
+/* ── EDIT TICKER ── */
+function startEditAnn(item){
+  editingTickerId=item._id;
+  document.getElementById('ann-text').value=item.text;
+  document.getElementById('ann-type').value=item.type;
+  document.getElementById('ann-href').value=item.href||'';
+  document.getElementById('ann-href-row').style.display=item.type==='text'?'none':'block';
+  document.getElementById('ann-form-title').textContent='Edit Announcement';
+  document.getElementById('ann-form-icon').className='fas fa-pen';
+  document.getElementById('ann-edit-badge').classList.add('visible');
+  document.getElementById('ann-btn-icon').className='fas fa-save';
+  document.getElementById('ann-btn-text').textContent='Save Changes';
+  document.getElementById('btn-cancel-ann').classList.add('visible');
+  document.getElementById('ann-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  renderTickerRows();
+}
+
+function cancelAnnEdit(){
+  editingTickerId=null;
+  document.getElementById('ann-text').value='';
+  document.getElementById('ann-href').value='';
+  document.getElementById('ann-type').value='text';
+  document.getElementById('ann-href-row').style.display='none';
+  document.getElementById('ann-form-title').textContent='Add Announcement';
+  document.getElementById('ann-form-icon').className='fas fa-plus-circle';
+  document.getElementById('ann-edit-badge').classList.remove('visible');
+  document.getElementById('ann-btn-icon').className='fas fa-plus';
+  document.getElementById('ann-btn-text').textContent='Add to Ticker';
+  document.getElementById('btn-cancel-ann').classList.remove('visible');
+  annMsg('','');
+  renderTickerRows();
+}
+
+document.getElementById('btn-cancel-ann').addEventListener('click',cancelAnnEdit);
+document.getElementById('ann-type').addEventListener('change',function(){
+  document.getElementById('ann-href-row').style.display=this.value==='text'?'none':'block';
+});
+document.getElementById('btn-add-ann').addEventListener('click',saveAnn);
+
+async function saveAnn(){
+  const text=document.getElementById('ann-text').value.trim();
+  const type=document.getElementById('ann-type').value;
+  const href=document.getElementById('ann-href').value.trim();
+  annMsg('','');
+  if(!text){annMsg('Announcement text is required.','err');return}
+  if(type!=='text'&&!href){annMsg('Enter a URL or file path.','err');return}
+
+  const isEdit=!!editingTickerId;
+  showLoader(isEdit?'Updating…':'Saving…');
+  try{
+    const url=isEdit?`${API}/ticker/${editingTickerId}`:`${API}/ticker`;
+    const method=isEdit?'PATCH':'POST';
+    const res=await fetch(url,{method,headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`},body:JSON.stringify({text,type,href})});
+    const data=await res.json();
+    hideLoader();
+    if(!res.ok){annMsg(data.error||'Failed.','err');return}
+    if(isEdit){
+      allTicker=allTicker.map(t=>t._id===editingTickerId?data:t);
+      cancelAnnEdit();
+      annMsg('✓ Updated!','ok');
+    }else{
+      allTicker.push(data);
+      document.getElementById('ann-text').value='';
+      document.getElementById('ann-href').value='';
+      annMsg('✓ Added to ticker!','ok');
+      renderTickerRows();
+    }
+    renderTickerPreview();
+    setTimeout(()=>annMsg('',''),3000);
+  }catch{hideLoader();annMsg('Server error. Is the backend running?','err');}
+}
+
+async function deleteTicker(id,text){
+  if(!confirm(`Remove from ticker?\n\n"${text}"`))return;
+  showLoader('Deleting…');
+  try{
+    const res=await fetch(`${API}/ticker/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${TOKEN}`}});
+    hideLoader();
+    if(!res.ok){alert('Delete failed.');return}
+    allTicker=allTicker.filter(t=>t._id!==id);
+    if(editingTickerId===id)cancelAnnEdit();
+    else renderTickerRows();
+    renderTickerPreview();
+  }catch{hideLoader();alert('Error connecting to server.');}
+}
+
+function annMsg(t,type){const el=document.getElementById('ann-msg');el.textContent=t;el.className=`form-msg ${type}`}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 </body>
 </html>

@@ -58,7 +58,7 @@
 <div class="ticker">
   <div class="ticker-inner">
     <div class="ticker-label">📢 Announcements</div>
-    <div class="ticker-track" id="ticker-track"></div>
+    <div id="ticker-container"></div>
   </div>
 </div>
 
@@ -278,6 +278,7 @@
 </section>
 
 <style>
+  
 /* Scrollable notice list — shows ~5 rows then scroll */
 .notice-list--scroll {
   max-height: 300px;
@@ -300,8 +301,10 @@
 
 <script>
 /* ── Build ticker DOM — do not edit below this line ── */
-(function buildTicker() {
-  const track = document.getElementById('ticker-track');
+(function loadTicker() {
+  const API = 'http://localhost:5000/api/ticker';
+  const track = document.getElementById('ticker-container');
+
   if (!track) return;
 
   function makeItem(item) {
@@ -311,23 +314,44 @@
       span.textContent = item.text;
       return span;
     }
+
     const a = document.createElement('a');
     a.className = 'ticker-item ticker-item--link';
     a.href = item.href;
     a.textContent = item.text;
+
     if (item.type === 'download') {
       a.setAttribute('download', '');
-      a.innerHTML += ' <i class="fas fa-download" style="font-size:0.65em;opacity:0.7"></i>';
+      a.innerHTML += ' <i class="fas fa-download"></i>';
     } else {
-      a.innerHTML += ' <i class="fas fa-arrow-right" style="font-size:0.6em;opacity:0.7"></i>';
+      a.innerHTML += ' <i class="fas fa-arrow-right"></i>';
     }
-    if (item.target) a.target = item.target;
+
     return a;
   }
 
-  /* render twice for seamless CSS loop */
-  [...TICKER_ITEMS, ...TICKER_ITEMS].forEach(item => track.appendChild(makeItem(item)));
+  fetch(API)
+    .then(res => res.json())
+    .then(data => {
+      track.innerHTML = '';
+
+      if (!data.length) {
+        track.innerHTML = '<span class="ticker-item">No announcements</span>';
+        return;
+      }
+
+      // duplicate items for smooth infinite scroll
+      const items = [...data, ...data];
+
+      items.forEach(item => {
+        track.appendChild(makeItem(item));
+      });
+    })
+    .catch(() => {
+      track.innerHTML = '<span class="ticker-item">Failed to load announcements</span>';
+    });
 })();
+
 /* ── Notice Board — fetch from backend API ── */
 (function loadNotices() {
   const API = 'http://localhost:5000/api/notices'; // 🔧 Change to your server URL in production

@@ -154,7 +154,6 @@ function makeNoticeRow(item, adminMode) {
       }
     });
   }
-
   row.appendChild(date);
   row.appendChild(textWrap);
 

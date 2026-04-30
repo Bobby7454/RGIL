@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 5000;
 /* ══ Middleware ══ */
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',   // set to your domain in production
-  methods: ['GET','POST','DELETE'],
+  methods: ['GET','POST','DELETE','PATCH'],
   allowedHeaders: ['Content-Type','Authorization']
 }));
 app.use(express.json());
@@ -39,6 +39,15 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/rgil')
 ══════════════════════════════════════════════════════ */
 
 /* ── Admin ── */
+const tickerSchema = new mongoose.Schema({
+  type: { type: String, enum: ['link', 'download', 'text'], required: true },
+  text: { type: String, required: true },
+  href: { type: String },
+  badge: { type: String }
+}, { timestamps: true });
+
+const Ticker = mongoose.model('Ticker', tickerSchema);
+
 const adminSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true }
@@ -70,7 +79,7 @@ const Notice = mongoose.model('Notice', noticeSchema);
 ══════════════════════════════════════════════════════ */
 function requireAuth(req, res, next) {
   const header = req.headers['authorization'];
-  if (!header?.startsWith('Bearer '))
+  if (!header || !header.startsWith('Bearer '))
     return res.status(401).json({ error: 'No token — access denied' });
 
   try {
@@ -144,6 +153,41 @@ app.get('/api/notices', async (req, res) => {
   }
 });
 
+// GET ticker (public)
+app.get('/api/ticker', async (req, res) => {
+  const items = await Ticker.find().sort({ createdAt: -1 });
+  res.json(items);
+});
+
+// ADD ticker
+app.post('/api/ticker', requireAuth, async (req, res) => {
+  const item = await Ticker.create(req.body);
+  res.json(item);
+});
+
+// DELETE ticker
+app.delete('/api/ticker/:id', requireAuth, async (req, res) => {
+  await Ticker.findByIdAndDelete(req.params.id);
+  res.json({ message: 'Deleted' });
+});
+
+app.post('/api/ticker/seed', async (req, res) => {
+  await Ticker.deleteMany();
+
+  await Ticker.insertMany([
+    { type: "link", text: "Admissions Open for 2025–26 Academic Year — Apply Now", href: "admissions.html" },
+    { type: "download", text: "National Moot Court Competition — Download Brochure", href: "assets/moot-court-brochure.pdf" },
+    { type: "link", text: "Legal Aid Camp at Ramanayyapeta — Community Service Initiative", href: "events.html#legal-aid" },
+    { type: "download", text: "Results for Semester III Declared — Download Results PDF", href: "assets/sem3-results.pdf" },
+    { type: "link", text: "Guest Lecture by Hon. Justice (Retd.) K. Ramakrishna — 15 May 2025", href: "notices.html" },
+    { type: "text", text: "College closed on 14 April for Dr. Ambedkar Jayanti" },
+    { type: "text", text: "College closed on 1st May for May Day" }
+  ]);
+
+  res.json({ message: "Ticker seeded" });
+});
+
+
 /* POST /api/notices → ADMIN ONLY — add a notice */
 app.post('/api/notices', requireAuth, async (req, res) => {
   try {
@@ -202,25 +246,42 @@ app.post('/api/notices/seed', requireAuth, async (req, res) => {
   }
 });
 
+
+/* PATCH /api/notices/:id → ADMIN ONLY — edit a notice */
+app.patch('/api/notices/:id', requireAuth, async (req, res) => {
+  try {
+    const { panel, date, text, badge, type, href } = req.body;
+    const notice = await Notice.findByIdAndUpdate(
+      req.params.id,
+      { panel, date, text, badge: badge||'', type: type||'text', href: href||'' },
+      { new: true, runValidators: true }
+    );
+    if (!notice) return res.status(404).json({ error: 'Notice not found' });
+    res.json(notice);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* PATCH /api/ticker/:id → ADMIN ONLY — edit a ticker item */
+app.patch('/api/ticker/:id', requireAuth, async (req, res) => {
+  try {
+    const { text, type, href } = req.body;
+    const item = await Ticker.findByIdAndUpdate(
+      req.params.id,
+      { text, type: type||'text', href: href||'' },
+      { new: true, runValidators: true }
+    );
+    if (!item) return res.status(404).json({ error: 'Ticker item not found' });
+    res.json(item);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 /* ══ Health check ══ */
 app.get('/api/health', (_, res) => res.json({ status: 'ok', time: new Date() }));
 app.use((_, res) => res.status(404).json({ error: 'Route not found' }));
 
 app.listen(PORT, () => console.log(`🚀  RGIL API → http://localhost:${PORT}`));
 
-
-/* ═══════════════════════════════════════════════════════════════
-   CREATE A FILE NAMED  .env  IN THE SAME FOLDER WITH THIS:
-   ─────────────────────────────────────────────────────────────
-
-MONGO_URI=mongodb://localhost:27017/rgil
-JWT_SECRET=put_a_very_long_random_string_here_minimum_32_characters
-JWT_EXPIRES_IN=8h
-ADMIN_USERNAME=rgilAdmin
-ADMIN_PASSWORD=YourStrongPassword@2025
-PORT=5000
-CORS_ORIGIN=http://localhost:3000
-
-   ─────────────────────────────────────────────────────────────
-   NEVER commit .env to git. Add it to .gitignore.
-═══════════════════════════════════════════════════════════════ */
